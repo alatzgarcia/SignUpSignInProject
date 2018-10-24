@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" 
-            xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.UILoginFXMLController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UILoginFXMLController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -23,13 +22,13 @@
                   <Image url="@../img/readmore1600.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblUsernameError" layoutX="93.0" layoutY="50.0" text="Usuario:">
+            <Label fx:id="lblUser" layoutX="93.0" layoutY="50.0" text="Usuario:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <TextField fx:id="txtUsername" layoutX="93.0" layoutY="84.0" prefHeight="26.0" prefWidth="208.0" />
-            <Label fx:id="lblPasswordError" layoutX="93.0" layoutY="140.0" text="Contraseña:">
+            <Label fx:id="lblPassword" layoutX="93.0" layoutY="140.0" text="Contraseña:">
                <font>
                   <Font size="16.0" />
                </font>
@@ -41,9 +40,9 @@
                   <Font size="16.0" />
                </font>
             </PasswordField>
-            <Hyperlink fx:id="hlRegister" layoutX="215.0" layoutY="291.0" text="Regístrate" underline="true" />
+            <Hyperlink fx:id="hlRegister" onAction="#register" layoutX="215.0" layoutY="291.0" text="Regístrate" underline="true" />
             <Hyperlink fx:id="hlForgot" layoutX="90.0" layoutY="205.0" text="¿No te acuerdas de la contraseña?" underline="true" />
-            <Button fx:id="btnLogin" layoutX="93.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" text="Iniciar Sesión">
+            <Button fx:id="btnLogin" onAction="#login" layoutX="93.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" text="Iniciar Sesión">
                <font>
                   <Font size="16.0" />
                </font>

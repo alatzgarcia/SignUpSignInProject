@@ -21,7 +21,7 @@ import signupsigninuidesktop.ui.controller.UILoginFXMLController;
  * @author Alatz
  */
 public class App extends Application {
-    private final Logger logger = Logger.getLogger("signupsigninuidesktop.App");
+    private static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.App");
     
     public static void main(String[] args){
         launch(args);
@@ -47,9 +47,9 @@ public class App extends Application {
             loginController.setStage(primaryStage);
             //Initialize the primary stage of the application
             loginController.initStage(root);
-        }catch(Exception e){
+            }catch(Exception e){
             //--TOFIX
-            logger.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }  
     }
 }

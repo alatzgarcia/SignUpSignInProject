@@ -26,5 +26,17 @@ public class User {
         this.login = login;
         this.password = password;
     }
+
+    public User(String login, String email, String fullName, String password){
+        this.login = login;
+        this.email = email;
+        this.fullName = fullName;
+        this.password = password;
+    }
+    
+    //--TOFIX -- Delete when no longer needed
+    public User() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

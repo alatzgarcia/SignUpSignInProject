@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,11 +25,16 @@ import signupsigninuidesktop.model.User;
  *
  * @author Alatz
  */
-public class UILoginFXMLController extends GenericController{
+public class UILoginFXMLController extends GenericController {
+    @FXML
     private TextField txtUsername;
+    @FXML
     private PasswordField pfPassword; 
+    @FXML
     private Label lblUsernameError;
+    @FXML
     private Label lblPasswordError;
+    @FXML
     private Button btnLogin;
     
     
@@ -44,6 +50,7 @@ public class UILoginFXMLController extends GenericController{
         pfPassword.textProperty().addListener(this::onTextChanged);
         
         txtUsername.focusedProperty().addListener(this::onFocusChanged);
+        pfPassword.focusedProperty().addListener(this::onFocusChanged);
         
         stage.show();
     }
@@ -108,7 +115,10 @@ public class UILoginFXMLController extends GenericController{
                 || pfPassword.getText().trim().length() == 0){
             btnLogin.setDisable(true);
         }
-        else {
+        else if(txtUsername.getText().trim().length()>=userPasswordMinLength 
+                && txtUsername.getText().trim().length()<=userPasswordMaxLength 
+                && pfPassword.getText().trim().length()>=userPasswordMinLength
+                && pfPassword.getText().trim().length()<=userPasswordMaxLength){
             btnLogin.setDisable(false);
         }
     }
@@ -124,8 +134,9 @@ public class UILoginFXMLController extends GenericController{
     public void onFocusChanged(ObservableValue observable,
              Boolean oldValue,
              Boolean newValue){
-        TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
+        
         if(oldValue){
+            TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
             if(tf.getText().length() < userPasswordMinLength ||
                     tf.getText().length() > userPasswordMaxLength){
                 if(tf == txtUsername){
