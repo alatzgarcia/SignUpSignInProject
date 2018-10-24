@@ -47,7 +47,7 @@ public class App extends Application {
             loginController.setStage(primaryStage);
             //Initialize the primary stage of the application
             loginController.initStage(root);
-            }catch(Exception e){
+        }catch(Exception e){
             //--TOFIX
             LOGGER.info(e.getMessage());
         }  

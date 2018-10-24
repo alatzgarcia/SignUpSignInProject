@@ -36,7 +36,132 @@ public class User {
     
     //--TOFIX -- Delete when no longer needed
     public User() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the fullName
+     */
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     * @param fullName the fullName to set
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the privilege
+     */
+    public String getPrivilege() {
+        return privilege;
+    }
+
+    /**
+     * @param privilege the privilege to set
+     */
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the lastAccess
+     */
+    public Date getLastAccess() {
+        return lastAccess;
+    }
+
+    /**
+     * @param lastAccess the lastAccess to set
+     */
+    public void setLastAccess(Date lastAccess) {
+        this.lastAccess = lastAccess;
+    }
+
+    /**
+     * @return the lastPasswordChange
+     */
+    public Date getLastPasswordChange() {
+        return lastPasswordChange;
+    }
+
+    /**
+     * @param lastPasswordChange the lastPasswordChange to set
+     */
+    public void setLastPasswordChange(Date lastPasswordChange) {
+        this.lastPasswordChange = lastPasswordChange;
     }
     
 }

@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package signupsigninuidesktop.logic;
+package signupsigninuidesktop.ui.controller;
 
 import javafx.scene.Parent;
-import signupsigninuidesktop.ui.controller.GenericController;
 
 /**
  *
  * @author Alatz
  */
-public class UIRegisterFXMLController extends GenericController {
+public class UILoggedFXMLController extends GenericController {
     public void initStage(Parent root){
         
     }
