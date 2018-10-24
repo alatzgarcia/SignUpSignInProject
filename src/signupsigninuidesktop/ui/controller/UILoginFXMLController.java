@@ -134,7 +134,6 @@ public class UILoginFXMLController extends GenericController {
     public void onFocusChanged(ObservableValue observable,
              Boolean oldValue,
              Boolean newValue){
-        
         if(oldValue){
             TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
             if(tf.getText().length() < userPasswordMinLength ||
