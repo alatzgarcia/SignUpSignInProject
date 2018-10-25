@@ -35,7 +35,7 @@ public class App extends Application {
             
             //Load the fxml file
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UILogin.fxml"));
+                    .getResource("/signupsigninuidesktop/ui/fxml/UILogin_1.fxml"));
             Parent root = loader.load();
             //Get controller from the loader
             UILoginFXMLController loginController = loader.getController();

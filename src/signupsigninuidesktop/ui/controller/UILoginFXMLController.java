@@ -83,9 +83,12 @@ public class UILoginFXMLController extends GenericController {
             stage.hide();
         } catch(IncorrectLoginException ile){
             LOGGER.info("Error. Incorrect login.");
+            showErrorAlert("Error. El login introducido es incorrecto");
         } catch(IncorrectPasswordException ipe){
             LOGGER.info("Error.Incorrect password.");
+            showErrorAlert("Error. La contraseña introducida es incorrecta");
         } catch(Exception e){
+            LOGGER.info(e.getMessage());
             //--TOFIX
         }
     }

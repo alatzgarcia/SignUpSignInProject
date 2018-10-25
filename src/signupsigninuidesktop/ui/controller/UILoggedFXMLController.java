@@ -6,6 +6,8 @@
 package signupsigninuidesktop.ui.controller;
 
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  *
@@ -13,6 +15,12 @@ import javafx.scene.Parent;
  */
 public class UILoggedFXMLController extends GenericController {
     public void initStage(Parent root){
+        stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Logged");
+        stage.setResizable(false);
         
+        stage.show();
     }
 }
