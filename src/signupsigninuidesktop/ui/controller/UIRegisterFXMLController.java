@@ -20,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import signupsigninuidesktop.exceptions.EmailExistsException;
+import signupsigninuidesktop.exceptions.LoginExistsException;
 import signupsigninuidesktop.model.User;
 
 
@@ -104,35 +106,47 @@ public class UIRegisterFXMLController extends GenericController{
     private void register(ActionEvent event) {
 //descomentar cuando haya validate
         //the validate methods checks if the parameter already exists in the DB
-        
-        //validateEmail(txtEmail.toString().trim());
-        //validateLogin(txtUsername.toString().trim());
+        try{
+            User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
+            logicManager.register(user);
+            //validateEmail(txtEmail.toString().trim());
+            //validateLogin(txtUsername.toString().trim());
         
         /**
-         * When you press the register button will check the validate return and
+         * When you press the register button will check the validate methods return
          * if they doesn't exist, will be saved in the User.
          * If they exist an error will be showed.
          */
-        if(validEmail&&validUser){
-            User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
-            
+            /*if(validEmail&&validUser){
+                User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
 
-           // logicManager.register(user);
-        }else{
-            if(!validEmail){
-                lblEmailError.setText("El email ya existe");
-                focusError(txtEmail);
+
+               logicManager.register(user);
             }else{
-                lblEmailError.setText("");
-                focusCorrected(txtEmail);
-            }
-            if(!validUser){
-                lblUsernameError.setText("El nombre de usuario ya existe");
-                focusError(txtUsername);
-            }else{
-                lblUsernameError.setText("");
-                focusCorrected(txtUsername);
-            }
+                if(!validEmail){
+                    lblEmailError.setText("El email ya existe");
+                    focusError(txtEmail);
+                }else{
+                    lblEmailError.setText("");
+                    focusCorrected(txtEmail);
+                }
+                if(!validUser){
+                    lblUsernameError.setText("El nombre de usuario ya existe");
+                    focusError(txtUsername);
+                }else{
+                    lblUsernameError.setText("");
+                    focusCorrected(txtUsername);
+                }
+            }*/
+        } catch(LoginExistsException lee){
+            LOGGER.info("Error. El usuario ya existe.");
+            showErrorAlert(lee.getMessage());
+        } catch(EmailExistsException eee){
+            LOGGER.info("Error.Incorrect password.");
+            showErrorAlert(eee.getMessage());
+        } catch(Exception e){
+            LOGGER.info(e.getMessage());
+            showErrorAlert("Error en el inicio de sesión.");
         }
     }
     
@@ -191,7 +205,8 @@ public class UIRegisterFXMLController extends GenericController{
                 //if any field is empty the button is disabled
                 btnRegister.setDisable(true);
         }else{
-            //Checks the last time 
+            /*If the fields have the corrct length, password are the same
+            and email format is correct, the button will be enabled*/
             if(checkUsernametc()&&checkEmailtc()&&checkFullNametc()&&checkPasswordtc()&&checkSafetyPasswordtc()){
                 btnRegister.setDisable(false);
             }else{
@@ -202,35 +217,42 @@ public class UIRegisterFXMLController extends GenericController{
         }
                        
       }
-    
+    /**
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     private void onFocusChanged(ObservableValue observable,
             Boolean oldValue,
             Boolean newValue){
         
         if(oldValue){
             TextField field = (TextField)((ReadOnlyProperty)observable).getBean();
-            if(field==txtUsername){
-            checkUsername();
-            
-            }else if (field==txtFullName){
-                checkFullName();
-            }else if (field==txtEmail){
-                checkEmail();
-            }else if(field==pfPassword){
-                checkPassword();
-            }else if(field==pfSafetyPassword){
-                checkSafetyPassword();
+            if(!field.getText().trim().equals("")){
+                if(field==txtUsername){
+                    checkUsername();
+
+                }else if (field==txtFullName){
+                    checkFullName();
+                }else if (field==txtEmail){
+                    checkEmail();
+                }else if(field==pfPassword){
+                    checkPassword();
+                }else if(field==pfSafetyPassword){
+                    checkSafetyPassword();
+                }
             }
         }
     }
 
-    private void validateEmail(String email){
-        // validEmail=logicManager.validateEmail(txtEmail.toString().trim());
+    private void validateEmail(String email) throws EmailExistsException{
+        validEmail=logicManager.validateEmail(txtEmail.toString().trim());
          
     }
     
-    private void validateLogin(String username){
-        //validUser= logicManager.validateLogin(txtUsername.toString().trim());
+    private void validateLogin(String username)throws LoginExistsException{
+        validUser= logicManager.validateLogin(txtUsername.toString().trim());
         
     }
     
