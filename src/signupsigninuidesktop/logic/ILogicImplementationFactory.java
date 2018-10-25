@@ -12,7 +12,7 @@ package signupsigninuidesktop.logic;
 public class ILogicImplementationFactory {
     
     public static ILogic getLogic(){
-        //return new ILogicImplementation();
-        return new ILogicTestDataImplementation(); //Imp class with test data
+        return new ILogicImplementation();
+        //return new ILogicTestDataImplementation(); //Imp class with test data
     }
 }

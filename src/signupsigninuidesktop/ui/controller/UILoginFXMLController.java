@@ -5,6 +5,8 @@
  */
 package signupsigninuidesktop.ui.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -37,8 +40,15 @@ public class UILoginFXMLController extends GenericController {
     private Label lblPasswordError;
     @FXML
     private Button btnLogin;
+    @FXML
+    private Button btnExit;
+    @FXML
+    private Hyperlink hlRegister;
     
-    
+    /**
+     * 
+     * @param root 
+     */
     public void initStage(Parent root){
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -53,15 +63,27 @@ public class UILoginFXMLController extends GenericController {
         txtUsername.focusedProperty().addListener(this::onFocusChanged);
         pfPassword.focusedProperty().addListener(this::onFocusChanged);
         
+        btnExit.setOnAction(this::exit);
+        btnLogin.setOnAction(this::login);
+        hlRegister.setOnAction(this::register);
+        
         stage.show();
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleWindowShowing(WindowEvent event){
         btnLogin.setDisable(true);
         txtUsername.requestFocus();
         //Settear promptText
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void login(ActionEvent event){
         
         try{
@@ -83,16 +105,20 @@ public class UILoginFXMLController extends GenericController {
             stage.hide();
         } catch(IncorrectLoginException ile){
             LOGGER.info("Error. Incorrect login.");
-            showErrorAlert("Error. El login introducido es incorrecto");
+            showErrorAlert(ile.getMessage());
         } catch(IncorrectPasswordException ipe){
             LOGGER.info("Error.Incorrect password.");
-            showErrorAlert("Error. La contraseña introducida es incorrecta");
+            showErrorAlert(ipe.getMessage());
         } catch(Exception e){
             LOGGER.info(e.getMessage());
-            //--TOFIX
+            showErrorAlert("Error en el inicio de sesión.");
         }
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void register(ActionEvent event){
         //calls the logicManager register functio
         try{
@@ -110,13 +136,22 @@ public class UILoginFXMLController extends GenericController {
             
             stage.hide();
         }catch(Exception e){
-            //--TOFIX
+            LOGGER.info(e.getMessage());
+            showErrorAlert("Error al redirigir al registro de usuario.");
         }
     }
     
-    public void exit(){
-        //--TOFIX -- Close socket if opened
-        Platform.exit();
+    /**
+     * Method to exit the application
+     */
+    public void exit(ActionEvent event){
+        try {
+            logicManager.close();
+            Platform.exit();
+        } catch (Exception ex) {
+            LOGGER.info(ex.getMessage());
+            showErrorAlert("Error al intentar cerrar la aplicación.");
+        }
     }
     
     /**

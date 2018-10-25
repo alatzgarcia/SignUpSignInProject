@@ -35,9 +35,9 @@
                   <Font size="16.0" />
                </font>
             </PasswordField>
-            <Hyperlink onAction="#register" layoutX="215.0" layoutY="291.0" text="Regístrate" underline="true" />
+            <Hyperlink fx:id="hlRegister" layoutX="215.0" layoutY="291.0" text="Regístrate" underline="true" />
             <Hyperlink layoutX="90.0" layoutY="205.0" text="¿No te acuerdas de la contraseña?" underline="true" />
-            <Button fx:id="btnLogin" onAction="#login" layoutX="93.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" text="Iniciar Sesión">
+            <Button fx:id="btnLogin" layoutX="93.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="208.0" text="Iniciar Sesión">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,7 +47,7 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="lblUserError" layoutX="93.0" layoutY="96.0" prefHeight="18.0" prefWidth="103.0" textFill="RED">
+            <Label fx:id="lblUsernameError" layoutX="93.0" layoutY="96.0" prefHeight="18.0" prefWidth="103.0" textFill="RED">
                <font>
                   <Font size="10.0" />
                </font>

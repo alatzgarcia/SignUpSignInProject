@@ -5,11 +5,13 @@
  */
 package signupsigninuidesktop.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Alatz
  */
-public class Message {
+public class Message implements Serializable{
     private String message;
     private Object data;
 

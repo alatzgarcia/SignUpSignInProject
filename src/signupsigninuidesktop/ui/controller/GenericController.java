@@ -17,7 +17,8 @@ import signupsigninuidesktop.logic.ILogic;
  */
 public class GenericController {
     //Meter aqui maxLength y MinLength para los diferentes campos
-    protected static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.ui.controller");
+    protected static final Logger LOGGER = 
+            Logger.getLogger("signupsigninuidesktop.ui.controller");
     protected final int userPasswordMinLength = 8;
     protected final int userPasswordMaxLength = 30;
     protected final int fullNameMinLength = 5;

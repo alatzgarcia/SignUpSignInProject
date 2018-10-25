@@ -62,5 +62,10 @@ public class ILogicTestDataImplementation implements ILogic{
             }
         }
     }
+
+    @Override
+    public void close() throws Exception {
+        //Does nothing
+    }
     
 }

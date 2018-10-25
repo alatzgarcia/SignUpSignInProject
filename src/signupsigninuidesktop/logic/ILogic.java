@@ -18,4 +18,5 @@ import signupsigninuidesktop.model.User;
 public interface ILogic {
     public User login(User user) throws IncorrectLoginException, IncorrectPasswordException;
     public User register(User user) throws LoginExistsException, EmailExistsException;
+    public void close() throws Exception; //--TOFIX ????
 }
