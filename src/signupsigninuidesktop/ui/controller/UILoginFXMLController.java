@@ -18,7 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
-import signupsigninuidesktop.logic.UIRegisterFXMLController;
+
 import signupsigninuidesktop.model.User;
 
 /**
@@ -63,31 +63,50 @@ public class UILoginFXMLController extends GenericController {
     
     public void login(ActionEvent event){
         
-        try{
+        /*try{
             //Sends a user to the logic controller with the entered parameters
             logicManager.login(new User(txtUsername.getText(), 
-                    pfPassword.getText()));   
+                    pfPassword.getText()));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
+            Parent root = loader.load();
+            //Get controller from the loader
+            UILoggedFXMLController loggedController = loader.getController();
+            /*Set a reference in the controller 
+                for the UILogin view for the logic manager object           
+            *
+            loggedController.setLogicManager(logicManager);
+            //Initialize the primary stage of the application
+            loggedController.initStage(root);
+            
+            stage.hide();
+        } catch(IncorrectLoginException ile){
+            LOGGER.info("Error. Incorrect login.");
+        } catch(IncorrectPasswordException ipe){
+            LOGGER.info("Error.Incorrect password.");
         } catch(Exception e){
             //--TOFIX
-        }
+        }*/
     }
     
     public void register(ActionEvent event){
+        System.out.println("Entra en el registro");
         //calls the logicManager register functio
         try{
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("ui/fxml/UIRegister.fxml"));
+                    .getResource("/signupsigninuidesktop/ui/fxml/UIRegister.fxml"));
             Parent root = loader.load();
             //Get controller from the loader
             UIRegisterFXMLController registerController = loader.getController();
             /*Set a reference in the controller 
-                for the UILogin view for the logic manager object           
+                for the UIController view for the logic manager object           
             */
             registerController.setLogicManager(logicManager);
-            //Set a reference for Stage in the UILogin view controller
-            registerController.setStage(stage);
             //Initialize the primary stage of the application
+            
             registerController.initStage(root);
+            
+            stage.hide();
         }catch(Exception e){
             //--TOFIX
         }
