@@ -20,8 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import signupsigninuidesktop.exceptions.EmailExistsException;
-import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninserver.exceptions.EmailExistsException;
+import signupsigninserver.exceptions.LoginExistsException;
 import signupsigninuidesktop.model.User;
 
 
