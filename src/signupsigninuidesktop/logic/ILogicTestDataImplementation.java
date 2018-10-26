@@ -12,7 +12,7 @@ import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninuidesktop.model.User;
+import signupsigninutilities.model.User;
 
 /**
  *
@@ -27,7 +27,7 @@ public class ILogicTestDataImplementation implements ILogic{
             User user = new User();
             user.setLogin("loginName"+i);
             user.setPassword("password"+i);
-            user.setEmail("email"+i);
+            user.setEmail("email" + i + "@email.com");
             user.setFullName("fullName"+i);
             users.add(user);
         }
@@ -56,9 +56,9 @@ public class ILogicTestDataImplementation implements ILogic{
             return user;
         } else{
             if(users.stream().filter(u -> u.getLogin().equalsIgnoreCase(user.getLogin())).count() != 0){
-                throw new EmailExistsException();
-            } else{
                 throw new LoginExistsException();
+            } else{
+                throw new EmailExistsException();
             }
         }
     }

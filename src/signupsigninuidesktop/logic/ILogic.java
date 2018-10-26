@@ -9,7 +9,7 @@ import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninuidesktop.model.User;
+import signupsigninutilities.model.User;
 
 /**
  *

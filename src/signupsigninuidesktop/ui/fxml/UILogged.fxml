@@ -54,7 +54,7 @@
    <top>
       <HBox prefHeight="27.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar prefHeight="26.0" prefWidth="1024.0">
+            <MenuBar fx:id="menuBar" prefHeight="26.0" prefWidth="1024.0">
               <menus>
                 <Menu fx:id="MenuFile" mnemonicParsing="false" style="-fx-background-color: #ECF3F2;" text="File">
                   <items>

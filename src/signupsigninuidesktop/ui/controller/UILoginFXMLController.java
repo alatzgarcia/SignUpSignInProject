@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
-import signupsigninuidesktop.model.User;
+import signupsigninutilities.model.User;
 
 /**
  *

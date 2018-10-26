@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
-import signupsigninuidesktop.model.Message;
-import signupsigninuidesktop.model.User;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
+import signupsigninutilities.model.Message;
+import signupsigninutilities.model.User;
 
 /**
  *
@@ -25,7 +25,7 @@ public class ILogicImplementation implements ILogic{
             Logger.getLogger("signupsigninuidesktop.logic.ILogicImplementation");
     
     private final String IP = "127.0.0.1";
-    private final int PORT = 5001; //--TOFIX
+    private final int PORT = 5010; //--TOFIX
 
     private Socket client;
     private ObjectOutputStream oos = null;
@@ -36,21 +36,21 @@ public class ILogicImplementation implements ILogic{
         try{
             if(client == null){
                 start();
-                /*try {
-                    client = new Socket(IP, PORT);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }*/
             }
             oos = new ObjectOutputStream(client.getOutputStream());
             LOGGER.info("Sending message to the server...");
             oos.writeObject(new Message("login", user));
-            User dbUser = null;
+           
             LOGGER.info("Awaiting for the server message...");
             ois = new ObjectInputStream(client.getInputStream());
             Message msg = (Message)ois.readObject();
+                        
+            LOGGER.info(msg.getMessage());
+            LOGGER.info("Server message arrived to the client.");
             if(msg.getMessage().equalsIgnoreCase("ok")){
+                User dbUser = null;
                 dbUser = (User)msg.getData();
+                return dbUser;
             } else if(msg.getMessage().equalsIgnoreCase("incorrectLogin")){
                 //--TOFIX -- Añadir condiciones
                 throw new IncorrectLoginException();
@@ -59,10 +59,15 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().equalsIgnoreCase("serverNotAvailable")){
                 //--TOFIX --> Atrapar la excepción que salta de por sí
                 //cuando el servidor no está disponible
+                throw new ServerNotAvailableException();
+            } else{
+                return null; //--TOFIX
             }
-            return dbUser;
+            
         } catch(Exception e){
             //--TOFIX
+            e.printStackTrace();
+            LOGGER.info(e.getMessage());
             return null;
         } finally {
             try {
@@ -113,7 +118,7 @@ public class ILogicImplementation implements ILogic{
         
     }
 
-    public boolean validateLogin(String login){
+    /*public boolean validateLogin(String login){
         try{
             if(client == null){
                 start();
@@ -169,7 +174,7 @@ public class ILogicImplementation implements ILogic{
                 LOGGER.info(ex.getMessage());
             }
         }
-    }
+    }*/
     
     @Override
     public void close() throws Exception{
