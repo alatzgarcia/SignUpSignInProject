@@ -14,6 +14,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
+import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import signupsigninuidesktop.App;
 
@@ -38,6 +39,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         verifyThat("#btnLogin", isDisabled());
         verifyThat("#btnExit", isEnabled()); 
         verifyThat("#txtUsername", isFocused());
+        verifyThat("#loginPane", isVisible());
     }
     
     @Test
@@ -48,4 +50,75 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         write("password1");
         verifyThat("#btnLogin", isEnabled());
     }
+    
+    //--TOFIX --> Separar en más métodos dependiendo el fallo
+    @Test
+    public void test3_BtnLoginDisabled(){
+        clickOn("#txtUsername");
+        write("login");
+        clickOn("#pfPassword");
+        write("passwd");
+        verifyThat("#btnLogin", isDisabled());
+    }
+    
+    //--TOFIX --> Codificar método/métodos de evento de cambio de foco
+    
+    //--TOFIX --> Implement when project is 100% functional with DB
+    // --> Change method name
+    @Test
+    public void test4_LoginError(){
+        clickOn("#txtUsername");
+        write("lasfjafsa");
+        clickOn("#pfPassword");
+        write("password1");
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat("#loginPane", isVisible());
+        //--TOFIX --> Poner texto correcto y correspondiente en ambos verify
+        verifyThat("#lblUsernameError", hasText(""));
+        verifyThat("#lblPasswordError", hasText(""));
+    }
+    
+    /*//--TOFIX --> Implement when project is 100% functional with DB
+    // --> Change method name
+    @Test
+    public void test5_PasswordError(){
+        clickOn("#txtUsername");
+        write("loginName1");
+        clickOn("#pfPassword");
+        write("sdlahdhaksdlas");
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat("#loginPane", isVisible());
+        //--TOFIX --> Poner texto correcto y correspondiente en ambos verify
+        verifyThat("#lblUsernameError", hasText(""));
+        verifyThat("#lblPasswordError", hasText(""));
+    }
+    
+    //--TOFIX --> Implement when project is 100% functional with DB
+    // --> Change method name
+    @Test
+    public void test6_LoginPasswordError(){
+        
+    }*/
+    
+    @Test
+    public void test7_IsLoggedViewVisible(){
+        clickOn("#txtUsername");
+        write("loginName1");
+        clickOn("#pfPassword");
+        write("password1");
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat("#loggedPane", isVisible());
+        //verifyThat("", isVisible());
+    }
+    
+    @Test 
+    public void test8_IsRegisterViewVisible(){
+        clickOn("#hlRegister");
+        verifyThat("#registerPane", isVisible());
+        //verifyThat("", isVisible());
+    }
+    
 }

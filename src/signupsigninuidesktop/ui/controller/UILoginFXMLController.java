@@ -167,8 +167,10 @@ public class UILoginFXMLController extends GenericController {
         /*Checks if any of the fields have no text entered 
             and disables the btnLogin button if true  
         */
-        if(txtUsername.getText().trim().length() == 0 
-                || pfPassword.getText().trim().length() == 0){
+        if(txtUsername.getText().trim().length()<userPasswordMinLength 
+                ||txtUsername.getText().trim().length()>userPasswordMaxLength
+                || pfPassword.getText().trim().length()<userPasswordMinLength
+                || pfPassword.getText().trim().length()>userPasswordMaxLength){
             btnLogin.setDisable(true);
         }
         else if(txtUsername.getText().trim().length()>=userPasswordMinLength 
