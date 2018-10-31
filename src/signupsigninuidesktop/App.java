@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import signupsigninuidesktop.logic.ILogic;
 import signupsigninuidesktop.logic.ILogicImplementationFactory;
 import signupsigninuidesktop.ui.controller.UILoginFXMLController;
+import signupsigninuidesktop.ui.controller.UIRegisterFXMLController;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -35,10 +36,10 @@ public class App extends Application {
             
             //Load the fxml file
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UILogin.fxml"));
+                    .getResource("/signupsigninuidesktop/ui/fxml/UIRegister.fxml"));
             Parent root = loader.load();
             //Get controller from the loader
-            UILoginFXMLController loginController = loader.getController();
+            UIRegisterFXMLController loginController = loader.getController();
             /*Set a reference in the controller 
                 for the UILogin view for the logic manager object           
             */

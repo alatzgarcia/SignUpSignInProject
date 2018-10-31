@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import signupsignin.User;
@@ -70,13 +71,14 @@ public class UIRegisterFXMLController extends GenericController{
      public void initStage(Parent root){
          //Create scene
          Scene scene = new Scene(root);
-         stage = new Stage();
+         //stage = new Stage();
          //Associate scene to stage
          stage.setScene(scene);
         
          
          stage.setTitle("Register");
          stage.setResizable(false);
+        //stage.initModality(Modality.APPLICATION_MODAL);
          //set window's events handlers
          stage.setOnShowing(this::handleWindowShowing);
          
