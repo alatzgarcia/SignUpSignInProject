@@ -65,8 +65,6 @@ public class ILogicImplementation implements ILogic{
             }
             
         } catch(Exception e){
-            //--TOFIX
-            e.printStackTrace();
             LOGGER.info(e.getMessage());
             return null;
         } finally {

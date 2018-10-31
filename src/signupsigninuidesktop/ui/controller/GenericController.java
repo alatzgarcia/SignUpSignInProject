@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import signupsigninuidesktop.logic.ILogic;
+import signupsigninutilities.model.User;
 
 /**
  *
@@ -26,6 +27,7 @@ public class GenericController {
     
     protected ILogic logicManager;
     protected Stage stage;
+    protected User user;
     
     protected void showErrorAlert(String errorMsg){
         //Shows error dialog.
@@ -45,5 +47,9 @@ public class GenericController {
     
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    
+    public void setUser(User dbUser){
+        this.user = dbUser;
     }
 }

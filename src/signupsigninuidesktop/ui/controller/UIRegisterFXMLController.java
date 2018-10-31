@@ -109,7 +109,7 @@ public class UIRegisterFXMLController extends GenericController{
         //the validate methods checks if the parameter already exists in the DB
         try{
             User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
-            logicManager.register(user);
+            User dbUser = logicManager.register(user);
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
             Parent root = loader.load();
@@ -120,6 +120,7 @@ public class UIRegisterFXMLController extends GenericController{
             */
             loggedController.setLogicManager(logicManager);
             //Initialize the primary stage of the application
+            loggedController.setUser(dbUser);
             loggedController.initStage(root);
             stage.hide();
             //validateEmail(txtEmail.toString().trim());
