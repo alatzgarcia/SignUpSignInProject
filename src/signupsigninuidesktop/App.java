@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 import signupsigninuidesktop.logic.ILogic;
 import signupsigninuidesktop.logic.ILogicImplementationFactory;
-import signupsigninuidesktop.ui.controller.UIRegisterFXMLController;
+import signupsigninuidesktop.ui.controller.UILoginFXMLController;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,25 +29,27 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
+        try{
             //Get the logic manager object for the initial stage
             ILogic logicManager = ILogicImplementationFactory.getLogic();
             
             //Load the fxml file
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UIRegister.fxml"));
+                    .getResource("/signupsigninuidesktop/ui/fxml/UILogin.fxml"));
             Parent root = loader.load();
             //Get controller from the loader
-            UIRegisterFXMLController registerController = loader.getController();
+            UILoginFXMLController loginController = loader.getController();
             /*Set a reference in the controller 
                 for the UILogin view for the logic manager object           
             */
-            registerController.setLogicManager(logicManager);
+            loginController.setLogicManager(logicManager);
             //Set a reference for Stage in the UILogin view controller
-            registerController.setStage(primaryStage);
+            loginController.setStage(primaryStage);
             //Initialize the primary stage of the application
-            registerController.initStage(root);
-            
+            loginController.initStage(root);
+        }catch(Exception e){
+            LOGGER.info(e.getMessage());
         }  
     }
+}
 

@@ -11,15 +11,21 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import signupsigninuidesktop.model.Message;
-import signupsigninuidesktop.model.User;
+import signupsignin.Message;
+import signupsignin.User;
+import signupsigninuidesktop.exceptions.EmailExistsException;
+import signupsigninuidesktop.exceptions.IncorrectLoginException;
+import signupsigninuidesktop.exceptions.IncorrectPasswordException;
+import signupsigninuidesktop.exceptions.LoginExistsException;
+
 
 /**
  *
  * @author Alatz
  */
 public class ILogicImplementation implements ILogic{
-    private static final Logger LOGGER = Logger.getLogger("logic.ILogicImplementation");
+    private static final Logger LOGGER = 
+            Logger.getLogger("signupsigninuidesktop.logic.ILogicImplementation");
     
     private final String IP = "127.0.0.1";
     private final int PORT = 5001; //--TOFIX
@@ -28,30 +34,39 @@ public class ILogicImplementation implements ILogic{
     private ObjectOutputStream oos = null;
     private ObjectInputStream ois = null;
     
-    @Override
     public User login(User user) {
         try{
             if(client == null){
-                //start();
-                try {
+                start();
+                /*try {
                     client = new Socket(IP, PORT);
                 } catch (IOException ex) {
                     LOGGER.log(Level.SEVERE, null, ex);
-                }
+                }*/
             }
             oos = new ObjectOutputStream(client.getOutputStream());
-            ois = new ObjectInputStream(client.getInputStream());
-            oos.writeObject(new Message("login", user));
+            LOGGER.info("Sending message to the server...");
+            //oos.writeObject("login");
+            LOGGER.info(user.getLogin());
+            Message message = new Message("login", user);
+            oos.writeObject(message);
             User dbUser = null;
+            LOGGER.info("Awaiting for the server message...");
+            ois = new ObjectInputStream(client.getInputStream());
             Message msg = (Message)ois.readObject();
             if(msg.getMessage().equalsIgnoreCase("ok")){
-                dbUser = (User)msg.getData();
+                dbUser = msg.getUser();
             } else if(msg.getMessage().equalsIgnoreCase("incorrectLogin")){
                 //--TOFIX -- Añadir condiciones
-                //throw new IncorrectLoginException();
+                throw new IncorrectLoginException();
+            } else if(msg.getMessage().equalsIgnoreCase("incorrectPassword")){
+                throw new IncorrectPasswordException();
             } else if(msg.getMessage().equalsIgnoreCase("serverNotAvailable")){
-                
+                //--TOFIX --> Atrapar la excepción que salta de por sí
+                //cuando el servidor no está disponible
             }
+           // String message = (String)ois.readObject();
+            LOGGER.info(dbUser.getFullName());
             return dbUser;
         } catch(Exception e){
             //--TOFIX
@@ -64,8 +79,12 @@ public class ILogicImplementation implements ILogic{
                 if(ois != null){
                     ois.close();   
                 }
+                if(client != null){
+                    client.close();
+                }
             } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                //LOGGER.log(Level.SEVERE, null, ex);
+                LOGGER.info(ex.getMessage());
             }
         }
     }
@@ -73,12 +92,7 @@ public class ILogicImplementation implements ILogic{
     public User register(User user){
         try{
             if(client == null){
-                //start();
-                try {
-                    client = new Socket(IP, PORT);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
+                start();  
             }
             oos = new ObjectOutputStream(client.getOutputStream());
             ois = new ObjectInputStream(client.getInputStream());
@@ -95,22 +109,21 @@ public class ILogicImplementation implements ILogic{
                 if(ois != null){
                     ois.close();   
                 }
+                if(client != null){
+                    client.close();
+                }
             } catch(IOException ex){
-                LOGGER.log(Level.SEVERE, null, ex);
+                //LOGGER.log(Level.SEVERE, null, ex);
+                LOGGER.info(ex.getMessage());
             }
         }
         
     }
 
-    public boolean validateLogin(String login){
+    /*public boolean validateLogin(String login){
         try{
             if(client == null){
-                //start();
-                try {
-                    client = new Socket(IP, PORT);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
+                start();
             }
             oos = new ObjectOutputStream(client.getOutputStream());
             ois = new ObjectInputStream(client.getInputStream());
@@ -128,8 +141,12 @@ public class ILogicImplementation implements ILogic{
                 if(ois != null){
                     ois.close();   
                 }
+                if(client != null){
+                    client.close();
+                }
             } catch(IOException ex){
-                LOGGER.log(Level.SEVERE, null, ex);
+                //LOGGER.log(Level.SEVERE, null, ex);
+                LOGGER.info(ex.getMessage());
             }
         }
     }
@@ -137,12 +154,7 @@ public class ILogicImplementation implements ILogic{
     public boolean validateEmail(String email){
         try{
             if(client == null){
-                //start();
-                try {
-                    client = new Socket(IP, PORT);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
+                start(); 
             }
             oos = new ObjectOutputStream(client.getOutputStream());
             ois = new ObjectInputStream(client.getInputStream());
@@ -160,8 +172,16 @@ public class ILogicImplementation implements ILogic{
                     ois.close();   
                 }
             } catch(IOException ex){
-                LOGGER.log(Level.SEVERE, null, ex);
+                //LOGGER.log(Level.SEVERE, null, ex);
+                LOGGER.info(ex.getMessage());
             }
+        }
+    }*/
+    
+    @Override
+    public void close() throws Exception{
+        if(client != null){
+            client.close();
         }
     }
     
@@ -169,7 +189,10 @@ public class ILogicImplementation implements ILogic{
         try {
             client = new Socket(IP, PORT);
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            //LOGGER.log(Level.SEVERE, null, ex);
+            LOGGER.info(ex.getMessage());
         }
     }
+
+    
 }

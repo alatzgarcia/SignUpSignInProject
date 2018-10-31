@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package signupsigninuidesktop.model;
+package signupsignin;
+
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author Alatz
  */
-public class User implements Serializable{
+public class User implements Serializable {
     private int id;
     private String login;
     private String email;
@@ -164,5 +165,4 @@ public class User implements Serializable{
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
-    
 }

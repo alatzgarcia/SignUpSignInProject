@@ -3,26 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package signupsigninuidesktop.model;
+package signupsignin;
+
+
+import java.io.Serializable;
 
 /**
  *
  * @author Alatz
  */
-public class Message {
+public class Message implements Serializable {
+    private static final long serialVersionUID = 1;
     private String message;
-    private Object data;
+    private User user;
 
-    public Message(String message, Object data) {
+    public Message(String message, User user) {
       this.message = message;
-      this.data = data;
+      this.user = user;
     }
     
     public String getMessage(){
         return message;
     }
     
-    public Object getData(){
-        return data;
+    public User getUser(){
+        return user;
     }
 }

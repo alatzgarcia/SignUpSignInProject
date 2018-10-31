@@ -6,11 +6,12 @@
 package signupsigninuidesktop.logic;
 
 import java.util.ArrayList;
+import signupsignin.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninuidesktop.model.User;
+
 
 /**
  *
@@ -61,7 +62,7 @@ public class ILogicTestDataImplementation implements ILogic{
         }
     }
 
-    @Override
+   /* @Override
     public boolean validateLogin(String login) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -69,7 +70,14 @@ public class ILogicTestDataImplementation implements ILogic{
     @Override
     public boolean validateEmail(String email) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }*/
+
+    @Override
+    public void close() throws Exception {
+        //Does nothing
     }
+
+   
 
     
 

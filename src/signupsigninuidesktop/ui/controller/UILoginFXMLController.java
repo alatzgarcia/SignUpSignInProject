@@ -14,12 +14,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
+import signupsignin.User;
+import signupsigninuidesktop.exceptions.IncorrectLoginException;
+import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 
-import signupsigninuidesktop.model.User;
 
 /**
  *
@@ -36,8 +39,15 @@ public class UILoginFXMLController extends GenericController {
     private Label lblPasswordError;
     @FXML
     private Button btnLogin;
+    @FXML
+    private Button btnExit;
+    @FXML
+    private Hyperlink hlRegister;
     
-    
+    /**
+     * 
+     * @param root 
+     */
     public void initStage(Parent root){
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -52,18 +62,30 @@ public class UILoginFXMLController extends GenericController {
         txtUsername.focusedProperty().addListener(this::onFocusChanged);
         pfPassword.focusedProperty().addListener(this::onFocusChanged);
         
+        btnExit.setOnAction(this::exit);
+        btnLogin.setOnAction(this::login);
+        hlRegister.setOnAction(this::register);
+        
         stage.show();
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void handleWindowShowing(WindowEvent event){
         btnLogin.setDisable(true);
         txtUsername.requestFocus();
         //Settear promptText
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void login(ActionEvent event){
         
-        /*try{
+        try{
             //Sends a user to the logic controller with the entered parameters
             logicManager.login(new User(txtUsername.getText(), 
                     pfPassword.getText()));
@@ -74,7 +96,7 @@ public class UILoginFXMLController extends GenericController {
             UILoggedFXMLController loggedController = loader.getController();
             /*Set a reference in the controller 
                 for the UILogin view for the logic manager object           
-            *
+            */
             loggedController.setLogicManager(logicManager);
             //Initialize the primary stage of the application
             loggedController.initStage(root);
@@ -82,15 +104,21 @@ public class UILoginFXMLController extends GenericController {
             stage.hide();
         } catch(IncorrectLoginException ile){
             LOGGER.info("Error. Incorrect login.");
+            showErrorAlert(ile.getMessage());
         } catch(IncorrectPasswordException ipe){
             LOGGER.info("Error.Incorrect password.");
+            showErrorAlert(ipe.getMessage());
         } catch(Exception e){
-            //--TOFIX
-        }*/
+            LOGGER.info(e.getMessage());
+            showErrorAlert("Error en el inicio de sesión.");
+        }
     }
     
+    /**
+     * 
+     * @param event 
+     */
     public void register(ActionEvent event){
-        System.out.println("Entra en el registro");
         //calls the logicManager register functio
         try{
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -103,18 +131,26 @@ public class UILoginFXMLController extends GenericController {
             */
             registerController.setLogicManager(logicManager);
             //Initialize the primary stage of the application
-            
             registerController.initStage(root);
             
             stage.hide();
         }catch(Exception e){
-            //--TOFIX
+            LOGGER.info(e.getMessage());
+            showErrorAlert("Error al redirigir al registro de usuario.");
         }
     }
     
-    public void exit(){
-        //--TOFIX -- Close socket if opened
-        Platform.exit();
+    /**
+     * Method to exit the application
+     */
+    public void exit(ActionEvent event){
+        try {
+            logicManager.close();
+            Platform.exit();
+        } catch (Exception ex) {
+            LOGGER.info(ex.getMessage());
+            showErrorAlert("Error al intentar cerrar la aplicación.");
+        }
     }
     
     /**

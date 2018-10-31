@@ -11,6 +11,7 @@ import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,9 +21,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import signupsignin.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninuidesktop.model.User;
+
 
 
 /**
@@ -109,6 +111,20 @@ public class UIRegisterFXMLController extends GenericController{
         try{
             User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
             logicManager.register(user);
+            
+              FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
+            Parent root = loader.load();
+            //Get controller from the loader
+            UILoggedFXMLController loggedController = loader.getController();
+            /*Set a reference in the controller 
+                for the UILogin view for the logic manager object           
+            */
+            loggedController.setLogicManager(logicManager);
+            //Initialize the primary stage of the application
+            loggedController.initStage(root);
+            
+            
             //validateEmail(txtEmail.toString().trim());
             //validateLogin(txtUsername.toString().trim());
         
@@ -246,7 +262,7 @@ public class UIRegisterFXMLController extends GenericController{
         }
     }
 
-    private void validateEmail(String email) throws EmailExistsException{
+    /*private void validateEmail(String email) throws EmailExistsException{
         validEmail=logicManager.validateEmail(txtEmail.toString().trim());
          
     }
@@ -254,7 +270,7 @@ public class UIRegisterFXMLController extends GenericController{
     private void validateLogin(String username)throws LoginExistsException{
         validUser= logicManager.validateLogin(txtUsername.toString().trim());
         
-    }
+    }*/
     
     private void checkUsername(){
         if(txtUsername.getText().trim().length()<userPasswordMinLength||txtUsername.getText().trim().length()>userPasswordMaxLength){

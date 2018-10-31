@@ -12,6 +12,6 @@ package signupsigninuidesktop.logic;
 public class ILogicImplementationFactory {
     
     public static ILogic getLogic(){
-        return new ILogicTestDataImplementation();
+        return new ILogicImplementation();
     }
 }

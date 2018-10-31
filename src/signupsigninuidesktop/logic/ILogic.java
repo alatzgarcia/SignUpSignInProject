@@ -5,11 +5,12 @@
  */
 package signupsigninuidesktop.logic;
 
+import signupsignin.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninuidesktop.model.User;
+
 
 /**
  * Interface for Logic.
@@ -28,8 +29,10 @@ public interface ILogic {
     public User login(User user)throws IncorrectLoginException, IncorrectPasswordException;;
     
     //This method validates if the user exists
-    public boolean validateLogin(String login);
+    //public boolean validateLogin(String login);
     
     //This method validates if the email exists
-    public boolean validateEmail(String email);
+    //public boolean validateEmail(String email);
+    
+    public void close() throws Exception; 
 }
