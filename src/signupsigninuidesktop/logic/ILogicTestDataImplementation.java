@@ -6,10 +6,10 @@
 package signupsigninuidesktop.logic;
 
 import java.util.ArrayList;
-import signupsigninserver.exceptions.EmailExistsException;
-import signupsigninserver.exceptions.IncorrectLoginException;
-import signupsigninserver.exceptions.IncorrectPasswordException;
-import signupsigninserver.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.EmailExistsException;
+import signupsigninuidesktop.exceptions.IncorrectLoginException;
+import signupsigninuidesktop.exceptions.IncorrectPasswordException;
+import signupsigninuidesktop.exceptions.LoginExistsException;
 import signupsigninuidesktop.model.User;
 
 /**
