@@ -12,7 +12,7 @@ import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninutilities.model.User;
+import signupsigninuidesktop.model.User;
 
 /**
  *

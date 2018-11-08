@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
-import signupsigninutilities.model.User;
+import signupsigninuidesktop.model.User;
 
 
 /**

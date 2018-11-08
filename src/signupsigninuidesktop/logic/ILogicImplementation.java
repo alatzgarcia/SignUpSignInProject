@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.ServerNotAvailableException;
-import signupsigninutilities.model.Message;
-import signupsigninutilities.model.User;
+import signupsigninuidesktop.model.Message;
+import signupsigninuidesktop.model.User;
 
 /**
  *

@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
-import signupsigninutilities.model.User;
+import signupsigninuidesktop.model.User;
 
 /**
  *
@@ -194,16 +194,18 @@ public class UILoginFXMLController extends GenericController {
              Boolean newValue){
         if(oldValue){
             TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
-            if(tf.getText().length() < userPasswordMinLength ||
-                    tf.getText().length() > userPasswordMaxLength){
-                if(tf == txtUsername){
-                    lblUsernameError.setText("Error. El campo usuario "
+            if(!tf.getText().trim().equals("")){
+                if(tf.getText().length() < userPasswordMinLength ||
+                        tf.getText().length() > userPasswordMaxLength){
+                    if(tf == txtUsername){
+                        lblUsernameError.setText("Error. El campo usuario "
+                                + "debe contener entre 8 y 30 caracteres");
+                    } else {
+                        lblPasswordError.setText("Error. El campo contraseña "
                             + "debe contener entre 8 y 30 caracteres");
-                } else {
-                    lblPasswordError.setText("Error. El campo contraseña "
-                        + "debe contener entre 8 y 30 caracteres");
+                    }
                 }
-            } 
+            }
         }
     }
 }
