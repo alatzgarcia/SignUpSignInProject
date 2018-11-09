@@ -5,18 +5,18 @@
  */
 package signupsigninuidesktop.exceptions;
 
-
 /**
- * Exception class login and email existing exception
+ * Exception class for the invalid operation error
  * @author Alatz
  */
-public class LoginEmailExistException extends Exception{
-    private static final String MESSAGE = "Error. El nombre de usuario"
-            + "y el email introducidos ya existen.";
+public class InvalidOperationException extends Exception{
+    private static final String MESSAGE = "Error. Tipo de operación"
+            + "no reconocido por el sistema.";
     /**
      * Method to get the message of the exception
      * @return returns the error message
      */
+    @Override
     public String getMessage(){
         return MESSAGE;
     }

@@ -31,6 +31,11 @@ public class UILoggedFXMLController extends GenericController {
     @FXML
     private Label lblBienvenido;
     
+    /**
+     * Create the Stage and the Scene ando show the stage.
+     * @param root 
+     */  
+    
     public void initStage(Parent root){
         
         stage = new Stage();
@@ -50,12 +55,11 @@ public class UILoggedFXMLController extends GenericController {
          */
 
     public void handleWindowShowing(WindowEvent event){
-        //user.setLogin("Juan");
-        LOGGER.info(user.getFullName());
+        
         lblBienvenido.setText("Buenas, " + user.getFullName()+ "!");
     }
     
-            /**
+        /**
         * Shows a window that shows two options
         * If you click the option "OK" the application will close.
         * If yo click the option "CANCEL" the application will not close
@@ -92,7 +96,7 @@ public class UILoggedFXMLController extends GenericController {
     
     
       /**
-       * Calls and load the UILogin.fxml
+       * Calls and loads the UILogin.fxml
        */
 
     public void goToLogin(){

@@ -19,7 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
-import signupsignin.User;
+import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 /**
@@ -111,11 +111,11 @@ public class UILoginFXMLController extends GenericController {
             LOGGER.severe("Error.Incorrect password. Detailed error: "
                     + ipe.getMessage());
             pfPassword.setStyle("-fx-border-color: red");
-            lblPasswordError.setText("Error. La contraseÃ±a introducida"
-                    + "es incorrecta.");
+            lblPasswordError.setText("Error. La contraseña introducida"
+                    + " es incorrecta.");
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            showErrorAlert("Se ha producido un error en el inicio de sesiÃ³n.");
+            showErrorAlert("Se ha producido un error en el inicio de sesión.");
         }
     }
     
@@ -138,7 +138,7 @@ public class UILoginFXMLController extends GenericController {
             //Initialize the primary stage of the application
             registerController.initStage(root);
             
-            stage.hide();
+            //stage.hide();
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error al redirigir al registro de usuario.");
@@ -209,10 +209,10 @@ public class UILoginFXMLController extends GenericController {
                 if(tf.getText().length() < userPasswordMinLength ||
                     tf.getText().length() > userPasswordMaxLength){
                     if(tf == txtUsername){
-                        lblUsernameError.setText("Error. El campo usuario "
+                        lblUsernameError.setText("Error. El usuario "
                                 + "debe contener entre 8 y 30 caracteres.");
                     } else {
-                        lblPasswordError.setText("Error. El campo contraseÃ±a "
+                        lblPasswordError.setText("Error. La contraseña "
                             + "debe contener entre 8 y 30 caracteres.");
                     }
                     tf.setStyle("-fx-border-color: red");

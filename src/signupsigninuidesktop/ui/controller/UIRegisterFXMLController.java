@@ -22,7 +22,7 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import signupsignin.User;
+import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
@@ -110,7 +110,8 @@ public class UIRegisterFXMLController extends GenericController{
     private void register(ActionEvent event) {
         try{
             //Creates an User with the user's inserted data
-            User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
+            User user = new User(txtUsername.getText(),txtEmail.getText(),
+                    txtFullName.getText(),pfPassword.getText());
             //Sends the user to the logic
             User dbUser=logicManager.register(user);
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -213,7 +214,8 @@ public class UIRegisterFXMLController extends GenericController{
             * and email format is correct, the button will be enabled otherwise
             * it won't be.
             */
-            if(checkUsernametc()&&checkEmailtc()&&checkFullNametc()&&checkPasswordtc()&&checkSafetyPasswordtc()){
+            if(checkUsernametc()&&checkEmailtc()&&checkFullNametc()
+                    &&checkPasswordtc()&&checkSafetyPasswordtc()){
                 btnRegister.setDisable(false);
             }else{
                 btnRegister.setDisable(true);
@@ -257,8 +259,10 @@ public class UIRegisterFXMLController extends GenericController{
      * corrects it.
      */
     private void checkUsername(){
-        if(txtUsername.getText().trim().length()<userPasswordMinLength||txtUsername.getText().trim().length()>userPasswordMaxLength){
-            lblUsernameError.setText("La longitud del nombre de usuario no es adecuada");
+        if(txtUsername.getText().trim().length()<userPasswordMinLength||
+                txtUsername.getText().trim().length()>userPasswordMaxLength){
+            lblUsernameError.setText("El usuario "
+                                + "debe contener entre 8 y 30 caracteres.");
             txtUsername.setStyle("-fx-border-color: red");
             
         }else{
@@ -275,7 +279,8 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private void checkFullName() {
         if(txtFullName.getText().trim().length()<fullNameMinLength||txtFullName.getText().trim().length()>fullNameMaxLength){
-            lblFullnameError.setText("La longitud del nombre no es adecuada");
+            lblFullnameError.setText("El nombre "
+                                + "debe contener entre 8 y 50 caracteres.");
             txtFullName.setStyle("-fx-border-color: red");
             
         }else{
@@ -292,7 +297,7 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private void checkEmail() {
         if(!txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")){
-            lblEmailError.setText("Email no vÃ¡lido");
+            lblEmailError.setText("Email no válido");
             txtEmail.setStyle("-fx-border-color: red");
             
         }else {
@@ -311,7 +316,8 @@ public class UIRegisterFXMLController extends GenericController{
         checkSafetyPassword();
         if(pfPassword.getText().trim().length()<userPasswordMinLength||
                 pfPassword.getText().trim().length()>userPasswordMaxLength){
-            lblPasswordError.setText("La longitud de la contraseÃ±a no es adecuada");
+            lblPasswordError.setText("La "
+                                + "debe contener entre 8 y 30 caracteres.");
             pfPassword.setStyle("-fx-border-color: red");
             
         }else{
@@ -330,11 +336,12 @@ public class UIRegisterFXMLController extends GenericController{
         if(!pfSafetyPassword.getText().trim().equals("")){
          if(pfSafetyPassword.getText().trim().length()<userPasswordMinLength||
                  pfSafetyPassword.getText().trim().length()>userPasswordMaxLength){
-            lblSafetyPasswordError.setText("La longitud de la contraseÃ±a no es adecuada");
+            lblSafetyPasswordError.setText("La contraseña "
+                                + "debe contener entre 8 y 30 caracteres.");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                       
         }else if (!pfPassword.getText().equals(pfSafetyPassword.getText())){
-            lblSafetyPasswordError.setText("Las contraseÃ±as no coinciden");
+            lblSafetyPasswordError.setText("Las contraseñas no coinciden");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                
         }else{
@@ -351,7 +358,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkUsernametc(){
-         return(txtUsername.getText().trim().length()>userPasswordMinLength&&txtUsername.getText().trim().length()<userPasswordMaxLength); 
+         return(txtUsername.getText().trim().length()>userPasswordMinLength&&
+                 txtUsername.getText().trim().length()<userPasswordMaxLength); 
         
     }
     
@@ -361,7 +369,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkFullNametc() {
-         return (txtFullName.getText().trim().length()>fullNameMinLength&&txtFullName.getText().trim().length()<fullNameMaxLength); 
+         return (txtFullName.getText().trim().length()>fullNameMinLength&&
+                 txtFullName.getText().trim().length()<fullNameMaxLength); 
         
     }
     
@@ -383,7 +392,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkPasswordtc() {
-         return (pfPassword.getText().trim().length()>=userPasswordMinLength&&pfPassword.getText().trim().length()<userPasswordMaxLength); 
+         return (pfPassword.getText().trim().length()>=userPasswordMinLength&&
+                 pfPassword.getText().trim().length()<userPasswordMaxLength); 
         
     }
     
@@ -399,11 +409,7 @@ public class UIRegisterFXMLController extends GenericController{
         
     }
     
-   /**
-    * In case of error in a text field, the field is send by parameter is
-    * changed to red
-    * @param textField TextField: The field that is changed in case of error
-    */
+   
 
 }
 

@@ -6,13 +6,16 @@
 package signupsigninuidesktop.exceptions;
 
 /**
- *
+ * Exception class for the incorrect password error
  * @author Alatz
  */
 public class IncorrectPasswordException extends Exception{
     private static final String MESSAGE = "Error. La contraseña introducida "
             + "es incorrecta.";
-    
+    /**
+     * Method to get the message of the exception
+     * @return returns the error message
+     */
     @Override
     public String getMessage(){
         return MESSAGE;

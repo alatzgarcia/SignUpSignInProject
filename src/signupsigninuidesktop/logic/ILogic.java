@@ -5,7 +5,7 @@
  */
 package signupsigninuidesktop.logic;
 
-import signupsignin.User;
+import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
@@ -20,20 +20,29 @@ import signupsigninuidesktop.exceptions.LoginExistsException;
  */
 public interface ILogic {
     /**
-     * Prototype for the function which the UI will be need to be checked 
-     * @param user User: This will be the class that carries all the user's data 
+     * This method sends all the user's data and it signs up, if there are no exceptions
+     * @param user User: The user's data
+     * @return User
+     * @throws IncorrectLoginException Exception that throws when the username 
+     *  doesn't exist for the login
+     * @throws IncorrectPasswordException Exception that throws when the entered
+     *  password doesn't match with the user's password
      */
-       //This method sends all the data by the User object and it will be registered
-    public User register(User user)throws LoginExistsException, EmailExistsException,LoginEmailExistException;;
+    public User login(User user) throws IncorrectLoginException, IncorrectPasswordException;
     
-    //This methods checks if the user and password are correct
-    public User login(User user)throws IncorrectLoginException, IncorrectPasswordException;;
+    /**
+     * This method sends the user's username and password and it signs in if
+     * there are no exceptions
+     * @param user User: The user's data
+     * @return User
+     * @throws LoginExistsException If the username already exists its thrown
+     * @throws EmailExistsException If the email already exists its thrown
+     */
+    public User register(User user) throws LoginExistsException, EmailExistsException, LoginEmailExistException;
     
-    //This method validates if the user exists
-    //public boolean validateLogin(String login);
-    
-    //This method validates if the email exists
-    //public boolean validateEmail(String email);
-    
+    /**
+     * It makes sure that the user's logs out
+     * @throws Exception general exception
+     */
     public void close() throws Exception; 
 }

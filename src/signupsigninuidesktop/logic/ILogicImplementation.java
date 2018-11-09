@@ -14,8 +14,8 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import signupsignin.Message;
-import signupsignin.User;
+import signupsigninutilities.model.Message;
+import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.GenericException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
@@ -25,7 +25,7 @@ import signupsigninuidesktop.exceptions.LoginExistsException;
 import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
 import signupsigninuidesktop.exceptions.RegisterFailedException;
 import signupsigninuidesktop.exceptions.ServerNotAvailableException;
-import signupsigninuidesktop.ui.controller.GenericController;
+
 
 /**
  * Class that implements the socket for the client side of the application
@@ -47,6 +47,8 @@ public class ILogicImplementation implements ILogic{
      * Method that connects client and server for the "login" of a user 
      * @param user
      * @return logged in user
+     * @throws signupsigninuidesktop.exceptions.IncorrectLoginException
+     * @throws signupsigninuidesktop.exceptions.IncorrectPasswordException
      */
     @Override
     public User login(User user) throws IncorrectLoginException, IncorrectPasswordException {
@@ -66,7 +68,7 @@ public class ILogicImplementation implements ILogic{
             LOGGER.info("Server message arrived to the client.");
             LOGGER.info(msg.getMessage());
             if(msg.getMessage().equalsIgnoreCase("ok")){
-                User dbUser = null;
+                User dbUser;
                 dbUser = (User)msg.getData();
                 return dbUser;
             } else if(msg.getMessage().equalsIgnoreCase("incorrectLogin")){
@@ -131,7 +133,7 @@ public class ILogicImplementation implements ILogic{
             LOGGER.info(msg.getMessage());
             LOGGER.info("Server message arrived to the client.");
             if(msg.getMessage().equalsIgnoreCase("ok")){
-                User dbUser = null;
+                User dbUser;
                 dbUser = (User)msg.getData();
                 return dbUser;
             } else if(msg.getMessage().equalsIgnoreCase("loginExists")){
@@ -149,9 +151,9 @@ public class ILogicImplementation implements ILogic{
                     equalsIgnoreCase("notAvailableConnections")){
                 throw new NotAvailableConnectionsException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
-                throw new GenericException(); //--TOFIX --> Crear excepciÃ³n
+                throw new GenericException(); 
             }else{
-                return null; //--TOFIX
+                return null; 
             }
          } catch(LoginExistsException lee){
             throw new LoginExistsException();
@@ -196,7 +198,7 @@ public class ILogicImplementation implements ILogic{
             client.close();
         }
         else{
-           // throw new AlreadyLoggedOutException();
+           //throw new AlreadyLoggedOutException();
         }
     }
     
@@ -208,17 +210,20 @@ public class ILogicImplementation implements ILogic{
         client = new Socket(ip, port);
     }
 
+    /**
+     * Method that takes the parameters for the socket from a config file.
+     */
     private void getData() {
         Properties config = new Properties();
 	FileInputStream input = null;
 	try {
             input = new FileInputStream("src/signupsigninuidesktop/config/connection.properties");
-            config.load(input); // carga los datos en la variable config
+            config.load(input); 
             ip = config.getProperty("ip");
             port=Integer.parseInt(config.getProperty("port"));
-            LOGGER.info("ip: "+ip);
-         } catch (FileNotFoundException ex) {
-            LOGGER.info("No encuentra archivo");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (IOException ex) {
             Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

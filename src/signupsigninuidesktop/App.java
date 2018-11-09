@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import signupsigninuidesktop.logic.ILogic;
 import signupsigninuidesktop.logic.ILogicImplementationFactory;
 import signupsigninuidesktop.ui.controller.UILoginFXMLController;
-import signupsigninuidesktop.ui.controller.UIRegisterFXMLController;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
