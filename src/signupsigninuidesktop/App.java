@@ -17,16 +17,25 @@ import signupsigninuidesktop.ui.controller.UILoginFXMLController;
  */
 
 /**
- *
+ * Application class for the SignUpSignIn application
  * @author Alatz
  */
 public class App extends Application {
     private static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.App");
     
+    /**
+     * Main method of the client application
+     * @param args 
+     */
     public static void main(String[] args){
         launch(args);
     }
 
+    /**
+     * Method start for the JavaFX Application
+     * @param primaryStage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         try{
@@ -47,9 +56,9 @@ public class App extends Application {
             loginController.setStage(primaryStage);
             //Initialize the primary stage of the application
             loginController.initStage(root);
-            }catch(Exception e){
-            //--TOFIX
-            LOGGER.info(e.getMessage());
+        }catch(Exception e){
+            LOGGER.severe(e.getMessage());
         }  
     }
 }
+
