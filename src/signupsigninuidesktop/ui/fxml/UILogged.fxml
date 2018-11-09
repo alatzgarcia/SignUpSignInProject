@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="loggedPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UILoggedFXMLController">
+<BorderPane fx:id="loggedPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UILoggedFXMLController">
    <left>
       <VBox prefHeight="438.0" prefWidth="343.0" BorderPane.alignment="CENTER" />
    </left>
@@ -56,7 +56,7 @@
          <children>
             <MenuBar fx:id="menuBar" prefHeight="26.0" prefWidth="1024.0">
               <menus>
-                <Menu fx:id="MenuFile" mnemonicParsing="false" style="-fx-background-color: #ECF3F2;" text="File">
+                <Menu fx:id="menuFile" mnemonicParsing="false" style="-fx-background-color: #ECF3F2;" text="File">
                   <items>
                     <MenuItem fx:id="mItLogout" mnemonicParsing="false" text="Desconectar" />
                         <MenuItem fx:id="mItExit" mnemonicParsing="false" text="Salir" />

@@ -11,7 +11,6 @@ import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,7 +27,8 @@ import signupsigninuidesktop.model.User;
 
 /**
  * Controller class for JavaFX view implementation of the Sign in Sign Up
- * application .
+ * application, this controller allows the user to register. The email and
+ * user must be uniques.
  * @author Nerea Jimenez and Diego Travesí
  */
 public class UIRegisterFXMLController extends GenericController{
@@ -57,13 +57,11 @@ public class UIRegisterFXMLController extends GenericController{
      private Button btnRegister;
      
          
-     //private boolean validUser=false;
-     //private boolean validEmail=false;
      
      /**
       * This method sets the listeners and shows the window at the start
-      * of the program
-      * @param root 
+      * of the program, set the title ans makes it unresizable.
+      * @param root Parent:
       */
      
      public void initStage(Parent root){
@@ -100,61 +98,22 @@ public class UIRegisterFXMLController extends GenericController{
      }
      
     /**
-     * Action event handler for the button Register in the UI. 
-     * @param event 
+     * Action event handler for the button Register in the UI, this method sends
+     * the data of the user by parameter to the logic.
+     * @param event AcionEvent
      */
      @FXML
     private void register(ActionEvent event) {
-//descomentar cuando haya validate
-        //the validate methods checks if the parameter already exists in the DB
         try{
+            //Creates an User with the user's inserted data
             User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
-            User dbUser = logicManager.register(user);
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
-            Parent root = loader.load();
-            //Get controller from the loader
-            UILoggedFXMLController loggedController = loader.getController();
-            /*Set a reference in the controller 
-                for the UILogin view for the logic manager object           
-            */
-            loggedController.setLogicManager(logicManager);
-            //Initialize the primary stage of the application
-            loggedController.setUser(dbUser);
-            loggedController.initStage(root);
-            stage.hide();
-            //validateEmail(txtEmail.toString().trim());
-            //validateLogin(txtUsername.toString().trim());
-        
-        /**
-         * When you press the register button will check the validate methods return
-         * if they doesn't exist, will be saved in the User.
-         * If they exist an error will be showed.
-         */
-            /*if(validEmail&&validUser){
-                User user = new User(txtUsername.getText(),txtEmail.getText(),txtFullName.getText(),pfPassword.getText());
-               logicManager.register(user);
-            }else{
-                if(!validEmail){
-                    lblEmailError.setText("El email ya existe");
-                    focusError(txtEmail);
-                }else{
-                    lblEmailError.setText("");
-                    focusCorrected(txtEmail);
-                }
-                if(!validUser){
-                    lblUsernameError.setText("El nombre de usuario ya existe");
-                    focusError(txtUsername);
-                }else{
-                    lblUsernameError.setText("");
-                    focusCorrected(txtUsername);
-                }
-            }*/
+            //Sends to the logic
+            logicManager.register(user);
         } catch(LoginExistsException lee){
-            LOGGER.info("Error. Login already exists.");
+            LOGGER.info("Error. El usuario ya existe.");
             showErrorAlert(lee.getMessage());
         } catch(EmailExistsException eee){
-            LOGGER.info("Error. Email already exists.");
+            LOGGER.info("Error.Incorrect password.");
             showErrorAlert(eee.getMessage());
         } catch(Exception e){
             LOGGER.info(e.getMessage());
@@ -164,17 +123,16 @@ public class UIRegisterFXMLController extends GenericController{
     
     /**
      * Action event handler for the button Back in the UI. 
-     * @param event 
+     * @param event AcionEvent
      */
     @FXML
     private void returnToLogin(ActionEvent event) {
         stage.close();
-        
     }
     
     /**
      * Action event handler for the button Exit in the UI. 
-     * @param event 
+     * @param event AcionEvent
      */
     @FXML
     private void exit(ActionEvent event) {
@@ -196,10 +154,14 @@ public class UIRegisterFXMLController extends GenericController{
     }
     
     /**
-     * This method will check everytime that any text is modified
-     * @param observable 
-     * @param oldValue The last value of the text
-     * @param newValue The new value of the text
+     * This method will check everytime that any text is modified, this method manages
+     * to enable or disable the button in case you modify the last text field 
+     * without changing the focus checking the minimum length and maximun length, 
+     * the email format, the passwords are equals and the email or login name hasn't 
+     * been never used
+     * @param observable The value being observed.
+     * @param oldValue The old value of the observable.
+     * @param newValue The new value of the observable.
      */
     private void onTextChanged(ObservableValue observable,
             String oldValue,
@@ -217,23 +179,25 @@ public class UIRegisterFXMLController extends GenericController{
                 //if any field is empty the button is disabled
                 btnRegister.setDisable(true);
         }else{
-            /*If the fields have the corrct length, password are the same
-            and email format is correct, the button will be enabled*/
+            /*If the fields have the correct length, password are the same
+            * and email format is correct, the button will be enabled otherwise
+            * it won't be.
+            */
             if(checkUsernametc()&&checkEmailtc()&&checkFullNametc()&&checkPasswordtc()&&checkSafetyPasswordtc()){
                 btnRegister.setDisable(false);
             }else{
                 btnRegister.setDisable(true);
-                    
             }
-            
-        }
-                       
+        }         
       }
+    
     /**
-     * 
-     * @param observable
-     * @param oldValue
-     * @param newValue 
+     * This method checks the text field when the user changes the focus, checks
+     * the minimum length and maximun length, the email format, the passwords are
+     * equals and the email or login name hasn't been never used
+     * @param observable ObservaThe value being observed.
+     * @param oldValue The old value of the observable.
+     * @param newValue The new value of the observable.
      */
     private void onFocusChanged(ObservableValue observable,
             Boolean oldValue,
@@ -244,7 +208,6 @@ public class UIRegisterFXMLController extends GenericController{
             if(!field.getText().trim().equals("")){
                 if(field==txtUsername){
                     checkUsername();
-
                 }else if (field==txtFullName){
                     checkFullName();
                 }else if (field==txtEmail){
@@ -257,17 +220,12 @@ public class UIRegisterFXMLController extends GenericController{
             }
         }
     }
-
-    /*private void validateEmail(String email) throws EmailExistsException{
-        validEmail=logicManager.validateEmail(txtEmail.toString().trim());
-         
-    }
     
-    private void validateLogin(String username)throws LoginExistsException{
-        validUser= logicManager.validateLogin(txtUsername.toString().trim());
-        
-    }*/
-    
+    /**
+     * Checks if the username fullfills the minimum and maximun length, if don't
+     * shows an error in a label and the text field turns red, until the user 
+     * corrects it.
+     */
     private void checkUsername(){
         if(txtUsername.getText().trim().length()<userPasswordMinLength||txtUsername.getText().trim().length()>userPasswordMaxLength){
             lblUsernameError.setText("La longitud del nombre de usuario no es adecuada");
@@ -277,7 +235,12 @@ public class UIRegisterFXMLController extends GenericController{
             focusCorrected(txtUsername);
         }
     }
-
+    
+    /**
+     * Checks if the full name of the user fullfills the minimum and maximun length, 
+     * if don't shows an error in a label and the text field turns red, until the user 
+     * corrects it.
+     */
     private void checkFullName() {
         if(txtFullName.getText().trim().length()<fullNameMinLength||txtFullName.getText().trim().length()>fullNameMaxLength){
             lblFullnameError.setText("La longitud del nombre no es adecuada");
@@ -288,6 +251,11 @@ public class UIRegisterFXMLController extends GenericController{
         }
     }
 
+    /**
+     * Checks if the email of the user fullfills the email format, if don't shows 
+     * an error in a label and the text field turns red, until the user 
+     * corrects it.
+     */
     private void checkEmail() {
         if(!txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")){
             lblEmailError.setText("Email no válido");
@@ -297,7 +265,12 @@ public class UIRegisterFXMLController extends GenericController{
             focusCorrected(txtEmail);
         }
     }
-
+    
+    /**
+     * Checks if the password of the user fullfills the minimum and maximun length, 
+     * if don't shows an error in a label and the text field turns red, until the user 
+     * corrects it.
+     */
     private void checkPassword() {
         checkSafetyPassword();
         if(pfPassword.getText().trim().length()<userPasswordMinLength||
@@ -309,7 +282,12 @@ public class UIRegisterFXMLController extends GenericController{
             focusCorrected(pfPassword);
         }
     }
-
+    
+    /**
+     * Checks if the password of the user fullfills the minimum and maximun length
+     * and its equals to the previous password if don't shows an error in a label 
+     * and the text field turns red, until the user corrects it.
+     */
     private void checkSafetyPassword() {
         if(!pfSafetyPassword.getText().trim().equals("")){
          if(pfSafetyPassword.getText().trim().length()<userPasswordMinLength||
@@ -326,18 +304,31 @@ public class UIRegisterFXMLController extends GenericController{
         }
     }
     
-    
+    /**
+     * Checks if the username of the user fullfills the minimum and maximun length
+     * when the text change (onTextChange method)
+     * @return 
+     */
     private boolean checkUsernametc(){
          return(txtUsername.getText().trim().length()>userPasswordMinLength&&txtUsername.getText().trim().length()<userPasswordMaxLength); 
         
-         
     }
-
+    
+    /**
+     * Checks if the full name of the user fullfills the minimum and maximun length
+     * when the text change (onTextChange method)
+     * @return 
+     */
     private boolean checkFullNametc() {
          return (txtFullName.getText().trim().length()>fullNameMinLength&&txtFullName.getText().trim().length()<fullNameMaxLength); 
         
     }
-
+    
+    /**
+     * Checks if the email of the user fullfills the email format
+     * when the text change (onTextChange method)
+     * @return 
+     */
     private boolean checkEmailtc() {
          return (txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")&&
                  txtEmail.getText().trim().length()>userPasswordMinLength&&
@@ -345,11 +336,21 @@ public class UIRegisterFXMLController extends GenericController{
         
     }
 
+    /**
+     * Checks if the password of the user fullfills the minimum and maximun length
+     * when the text change (onTextChange method)
+     * @return 
+     */
     private boolean checkPasswordtc() {
          return (pfPassword.getText().trim().length()>=userPasswordMinLength&&pfPassword.getText().trim().length()<userPasswordMaxLength); 
         
     }
-
+    
+    /**
+     * Checks if the password of the user fullfills the minimum and maximun length
+     * and its equals to the previous password when the text change (onTextChange method)
+     * @return 
+     */
     private boolean checkSafetyPasswordtc() {
          return (pfSafetyPassword.getText().trim().length()>=userPasswordMinLength&&
                     pfSafetyPassword.getText().trim().length()<userPasswordMaxLength&&
@@ -357,9 +358,20 @@ public class UIRegisterFXMLController extends GenericController{
         
     }
     
+   /**
+    * In case of error in a text field, the field is send by parameter is
+    * changed to red
+    * @param textField TextField: The field that is changed in case of error
+    */
    private void focusError(TextField textField){
        textField.setStyle("-fx-border-color: red");
    }
+   
+   /**
+    * In case there is no error (or the error was corrected) this method sets 
+    * the field style as default
+    * @param textField TextField: The field that is changed in case it have no error
+    */
    private void focusCorrected(TextField textField){
        textField.setStyle("");
    }
