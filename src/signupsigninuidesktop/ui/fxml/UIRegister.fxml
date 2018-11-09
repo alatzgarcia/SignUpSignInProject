@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="registerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UIRegisterFXMLController">
+<BorderPane fx:id="registerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UIRegisterFXMLController">
    <bottom>
       <HBox prefHeight="72.0" prefWidth="1024.0" style="-fx-background-color: #b8d1f9;" BorderPane.alignment="CENTER">
          <children>
@@ -23,7 +23,7 @@
                      <graphic>
                         <ImageView fx:id="imgDoor" fitHeight="41.0" fitWidth="30.0">
                            <image>
-                              <Image url="@../icons/Logout.png" />
+                              <Image url="@../../../fxmlimages/icons/logout.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -31,7 +31,7 @@
                      <graphic>
                         <ImageView fx:id="imgBack" fitHeight="41.0" fitWidth="48.0">
                            <image>
-                              <Image url="@../icons/left-pointing-arrow.png" />
+                              <Image url="@../../../fxmlimages/icons/left-pointing-arrow.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -84,12 +84,12 @@
             <Label fx:id="lblSafetyPasswordError" layoutX="340.0" layoutY="317.0" prefHeight="14.0" prefWidth="324.0" />
             <ImageView fitHeight="137.0" fitWidth="525.0" layoutX="-161.0" layoutY="-89.0" rotate="146.3">
                <image>
-                  <Image url="@../img/readmore1600.png" />
+                  <Image url="@../../../fxmlimages/icons/readmore1600.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="125.0" fitWidth="508.0" layoutX="-300.0" layoutY="-130.0" rotate="-34.0">
                <image>
-                  <Image url="@../img/readmore1600.png" />
+                  <Image url="@../../../fxmlimages/icons/readmore1600.png" />
                </image>
             </ImageView>
          </children>
@@ -105,7 +105,7 @@
             </Label>
             <ImageView fx:id="imgUser" fitHeight="89.0" fitWidth="93.0">
                <image>
-                  <Image url="@../icons/user2.png" />
+                  <Image url="@../../../fxmlimages/icons/user2.png" />
                </image>
             </ImageView>
          </children>
