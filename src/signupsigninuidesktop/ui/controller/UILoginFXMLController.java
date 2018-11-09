@@ -22,10 +22,8 @@ import javafx.stage.WindowEvent;
 import signupsignin.User;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
-
-
 /**
- *
+ * Controller class for UILogin.fxml
  * @author Alatz
  */
 public class UILoginFXMLController extends GenericController {
@@ -45,7 +43,7 @@ public class UILoginFXMLController extends GenericController {
     private Hyperlink hlRegister;
     
     /**
-     * 
+     * InitStage method for the UILogin view
      * @param root 
      */
     public void initStage(Parent root){
@@ -70,7 +68,7 @@ public class UILoginFXMLController extends GenericController {
     }
     
     /**
-     * 
+     * OnShowing handler for the UILogin view
      * @param event 
      */
     public void handleWindowShowing(WindowEvent event){
@@ -80,14 +78,14 @@ public class UILoginFXMLController extends GenericController {
     }
     
     /**
-     * 
+     * Method for the login of a user
      * @param event 
      */
     public void login(ActionEvent event){
         
         try{
             //Sends a user to the logic controller with the entered parameters
-            logicManager.login(new User(txtUsername.getText(), 
+            User user = logicManager.login(new User(txtUsername.getText(), 
                     pfPassword.getText()));
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
@@ -98,24 +96,31 @@ public class UILoginFXMLController extends GenericController {
                 for the UILogin view for the logic manager object           
             */
             loggedController.setLogicManager(logicManager);
+            //Send the user to the controller
+            loggedController.setUser(user);
             //Initialize the primary stage of the application
             loggedController.initStage(root);
             
             stage.hide();
         } catch(IncorrectLoginException ile){
-            LOGGER.info("Error. Incorrect login.");
-            showErrorAlert(ile.getMessage());
+            LOGGER.severe("Error. Incorrect login. Detailed error"
+                    + ile.getMessage());
+            txtUsername.setStyle("-fx-border-color: red");
+            lblUsernameError.setText("Error. El usuario introducido no existe.");
         } catch(IncorrectPasswordException ipe){
-            LOGGER.info("Error.Incorrect password.");
-            showErrorAlert(ipe.getMessage());
+            LOGGER.severe("Error.Incorrect password. Detailed error: "
+                    + ipe.getMessage());
+            pfPassword.setStyle("-fx-border-color: red");
+            lblPasswordError.setText("Error. La contraseÃ±a introducida"
+                    + "es incorrecta.");
         } catch(Exception e){
-            LOGGER.info(e.getMessage());
-            showErrorAlert("Error en el inicio de sesión.");
+            LOGGER.severe(e.getMessage());
+            showErrorAlert("Se ha producido un error en el inicio de sesiÃ³n.");
         }
     }
     
     /**
-     * 
+     * Method for the register of a new user
      * @param event 
      */
     public void register(ActionEvent event){
@@ -135,7 +140,7 @@ public class UILoginFXMLController extends GenericController {
             
             stage.hide();
         }catch(Exception e){
-            LOGGER.info(e.getMessage());
+            LOGGER.severe(e.getMessage());
             showErrorAlert("Error al redirigir al registro de usuario.");
         }
     }
@@ -148,8 +153,8 @@ public class UILoginFXMLController extends GenericController {
             logicManager.close();
             Platform.exit();
         } catch (Exception ex) {
-            LOGGER.info(ex.getMessage());
-            showErrorAlert("Error al intentar cerrar la aplicación.");
+            LOGGER.severe(ex.getMessage());
+            showErrorAlert("Error al intentar cerrar la aplicaciÃ³n.");
         }
     }
     
@@ -166,15 +171,24 @@ public class UILoginFXMLController extends GenericController {
         /*Checks if any of the fields have no text entered 
             and disables the btnLogin button if true  
         */
-        if(txtUsername.getText().trim().length() == 0 
-                || pfPassword.getText().trim().length() == 0){
-            btnLogin.setDisable(true);
+        if(txtUsername.getText().trim().length()<userPasswordMinLength 
+                ||txtUsername.getText().trim().length()>userPasswordMaxLength
+                || pfPassword.getText().trim().length()<userPasswordMinLength
+                || pfPassword.getText().trim().length()>userPasswordMaxLength){
+            btnLogin.setDisable(true);            
         }
         else if(txtUsername.getText().trim().length()>=userPasswordMinLength 
                 && txtUsername.getText().trim().length()<=userPasswordMaxLength 
                 && pfPassword.getText().trim().length()>=userPasswordMinLength
                 && pfPassword.getText().trim().length()<=userPasswordMaxLength){
             btnLogin.setDisable(false);
+        }
+        TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
+        tf.setStyle("");
+        if(tf == txtUsername){
+            lblUsernameError.setText("");
+        } else{
+            lblPasswordError.setText("");
         }
     }
     
@@ -191,16 +205,21 @@ public class UILoginFXMLController extends GenericController {
              Boolean newValue){
         if(oldValue){
             TextField tf = ((TextField)((ReadOnlyProperty)observable).getBean());
-            if(tf.getText().length() < userPasswordMinLength ||
+            if(tf.getText().length()!=0){
+                if(tf.getText().length() < userPasswordMinLength ||
                     tf.getText().length() > userPasswordMaxLength){
-                if(tf == txtUsername){
-                    lblUsernameError.setText("Error. El campo usuario "
-                            + "debe contener entre 8 y 30 caracteres");
-                } else {
-                    lblPasswordError.setText("Error. El campo contraseña "
-                        + "debe contener entre 8 y 30 caracteres");
+                    if(tf == txtUsername){
+                        lblUsernameError.setText("Error. El campo usuario "
+                                + "debe contener entre 8 y 30 caracteres.");
+                    } else {
+                        lblPasswordError.setText("Error. El campo contraseÃ±a "
+                            + "debe contener entre 8 y 30 caracteres.");
+                    }
+                    tf.setStyle("-fx-border-color: red");
+                } else{
+                    tf.setStyle("");
                 }
-            } 
+            }
         }
     }
 }

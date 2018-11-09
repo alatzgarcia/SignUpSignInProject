@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import signupsignin.User;
 import signupsigninuidesktop.logic.ILogic;
 
 /**
@@ -25,6 +26,8 @@ public class GenericController {
     
     protected ILogic logicManager;
     protected Stage stage;
+    protected User user;
+
     
     protected void showErrorAlert(String errorMsg){
         //Shows error dialog.
@@ -37,7 +40,7 @@ public class GenericController {
         alert.showAndWait();
         
     }
-    
+     
     public void setLogicManager(ILogic logicManager){
         this.logicManager = logicManager;
     }
@@ -45,4 +48,11 @@ public class GenericController {
     public void setStage(Stage stage){
         this.stage = stage;
     }
+    
+    public void setUser(User user){
+        this.user=user;
+        
+    }
+
+    
 }

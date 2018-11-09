@@ -10,7 +10,6 @@ import signupsigninuidesktop.logic.ILogic;
 import signupsigninuidesktop.logic.ILogicImplementationFactory;
 import signupsigninuidesktop.ui.controller.UILoginFXMLController;
 import signupsigninuidesktop.ui.controller.UIRegisterFXMLController;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,16 +17,25 @@ import signupsigninuidesktop.ui.controller.UIRegisterFXMLController;
  */
 
 /**
- *
+ * Application class for the SignUpSignIn application
  * @author Alatz
  */
 public class App extends Application {
     private static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.App");
     
+    /**
+     * Main method of the client application
+     * @param args 
+     */
     public static void main(String[] args){
         launch(args);
     }
 
+    /**
+     * Method start for the JavaFX Application
+     * @param primaryStage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         try{
@@ -36,10 +44,10 @@ public class App extends Application {
             
             //Load the fxml file
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UIRegister.fxml"));
+                    .getResource("/signupsigninuidesktop/ui/fxml/UILogin.fxml"));
             Parent root = loader.load();
             //Get controller from the loader
-            UIRegisterFXMLController loginController = loader.getController();
+            UILoginFXMLController loginController = loader.getController();
             /*Set a reference in the controller 
                 for the UILogin view for the logic manager object           
             */
@@ -49,7 +57,7 @@ public class App extends Application {
             //Initialize the primary stage of the application
             loginController.initStage(root);
         }catch(Exception e){
-            LOGGER.info(e.getMessage());
+            LOGGER.severe(e.getMessage());
         }  
     }
 }

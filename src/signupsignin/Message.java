@@ -15,18 +15,18 @@ import java.io.Serializable;
 public class Message implements Serializable {
     private static final long serialVersionUID = 1;
     private String message;
-    private User user;
+    private Object data;
 
-    public Message(String message, User user) {
+    public Message(String message, Object data) {
       this.message = message;
-      this.user = user;
+      this.data = data;
     }
     
     public String getMessage(){
         return message;
     }
     
-    public User getUser(){
-        return user;
+    public Object getData(){
+        return data;
     }
 }

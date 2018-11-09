@@ -42,16 +42,8 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Label fx:id="lblPasswordError" layoutX="93.0" layoutY="180.0" prefHeight="18.0" prefWidth="103.0" textFill="RED">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblUsernameError" layoutX="93.0" layoutY="96.0" prefHeight="18.0" prefWidth="103.0" textFill="RED">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
+            <Label fx:id="lblPasswordError" layoutX="93.0" layoutY="180.0" prefHeight="25.0" prefWidth="210.0" textFill="RED" />
+            <Label fx:id="lblUsernameError" layoutX="93.0" layoutY="96.0" prefHeight="24.0" prefWidth="214.0" textFill="RED" />
             <ImageView accessibleRole="BUTTON" fitHeight="36.0" fitWidth="48.0" layoutX="267.0" layoutY="152.0">
                <image>
                   <Image url="@../icons/Eye.png" />

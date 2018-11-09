@@ -77,11 +77,11 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
-            <Label fx:id="lblUsernameError" layoutX="338.0" layoutY="81.0" prefHeight="14.0" prefWidth="324.0" />
-            <Label fx:id="lblFullnameError" layoutX="338.0" layoutY="139.0" prefHeight="14.0" prefWidth="324.0" />
-            <Label fx:id="lblEmailError" layoutX="339.0" layoutY="202.0" prefHeight="14.0" prefWidth="324.0" />
-            <Label fx:id="lblPasswordError" layoutX="340.0" layoutY="260.0" prefHeight="14.0" prefWidth="324.0" />
-            <Label fx:id="lblSafetyPasswordError" layoutX="340.0" layoutY="317.0" prefHeight="14.0" prefWidth="324.0" />
+            <Label fx:id="lblUsernameError" layoutX="338.0" layoutY="81.0" prefHeight="14.0" prefWidth="324.0" textFill="RED" />
+            <Label fx:id="lblFullnameError" layoutX="338.0" layoutY="139.0" prefHeight="14.0" prefWidth="324.0" textFill="RED" />
+            <Label fx:id="lblEmailError" layoutX="339.0" layoutY="202.0" prefHeight="14.0" prefWidth="324.0" textFill="RED" />
+            <Label fx:id="lblPasswordError" layoutX="340.0" layoutY="260.0" prefHeight="14.0" prefWidth="324.0" textFill="RED" />
+            <Label fx:id="lblSafetyPasswordError" layoutX="340.0" layoutY="317.0" prefHeight="14.0" prefWidth="324.0" textFill="RED" />
             <ImageView fitHeight="137.0" fitWidth="525.0" layoutX="-161.0" layoutY="-89.0" rotate="146.3">
                <image>
                   <Image url="@../img/readmore1600.png" />

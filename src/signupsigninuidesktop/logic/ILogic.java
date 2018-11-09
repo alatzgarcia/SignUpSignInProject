@@ -9,6 +9,7 @@ import signupsignin.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
+import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
 
 
@@ -23,7 +24,7 @@ public interface ILogic {
      * @param user User: This will be the class that carries all the user's data 
      */
        //This method sends all the data by the User object and it will be registered
-    public User register(User user)throws LoginExistsException, EmailExistsException;;
+    public User register(User user)throws LoginExistsException, EmailExistsException,LoginEmailExistException;;
     
     //This methods checks if the user and password are correct
     public User login(User user)throws IncorrectLoginException, IncorrectPasswordException;;
