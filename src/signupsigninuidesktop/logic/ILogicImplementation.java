@@ -51,7 +51,8 @@ public class ILogicImplementation implements ILogic{
      * @throws signupsigninuidesktop.exceptions.IncorrectPasswordException
      */
     @Override
-    public User login(User user) throws IncorrectLoginException, IncorrectPasswordException {
+    public User login(User user) throws IncorrectLoginException, 
+            IncorrectPasswordException, ServerNotAvailableException, Exception {
         try{
             
             start();
@@ -84,11 +85,10 @@ public class ILogicImplementation implements ILogic{
             }
         } catch(IncorrectPasswordException ipe){
             throw new IncorrectPasswordException();
-           
-        
         } catch(IncorrectLoginException ile){
             throw new IncorrectLoginException();
-           
+        } catch(ServerNotAvailableException snae){
+            throw new ServerNotAvailableException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             return null;
@@ -118,7 +118,9 @@ public class ILogicImplementation implements ILogic{
      * @throws signupsigninuidesktop.exceptions.LoginEmailExistException
      */
     @Override
-    public User register(User user) throws LoginExistsException, EmailExistsException,LoginEmailExistException{
+    public User register(User user) throws LoginExistsException, 
+            EmailExistsException, LoginEmailExistException, 
+            ServerNotAvailableException, Exception{
         try{
             start();
            
@@ -157,19 +159,15 @@ public class ILogicImplementation implements ILogic{
             }
          } catch(LoginExistsException lee){
             throw new LoginExistsException();
-           
-        
          } catch(EmailExistsException eee){
             throw new EmailExistsException();
-                     
-        
         } catch(LoginEmailExistException leee){
             throw new LoginEmailExistException();
-           
-           
+        } catch(ServerNotAvailableException snae){
+            throw new IncorrectLoginException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
+            throw new GenericException();
         } finally {
             try {
                 if(oos != null){

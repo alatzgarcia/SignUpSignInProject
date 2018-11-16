@@ -5,6 +5,7 @@
  */
 package signupsigninuidesktop.ui.controller;
 
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
@@ -13,7 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -22,6 +25,8 @@ import javafx.stage.WindowEvent;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
+import static signupsigninuidesktop.ui.controller.GenericController.LOGGER;
 /**
  * Controller class for UILogin.fxml
  * @author Alatz
@@ -44,7 +49,7 @@ public class UILoginFXMLController extends GenericController {
     
     /**
      * InitStage method for the UILogin view
-     * @param root 
+     * @param root parent object to initialize the new scene
      */
     public void initStage(Parent root){
         Scene scene = new Scene(root);
@@ -69,17 +74,21 @@ public class UILoginFXMLController extends GenericController {
     
     /**
      * OnShowing handler for the UILogin view
-     * @param event 
+     * @param event event of window showing/opening that calls to the method
      */
     public void handleWindowShowing(WindowEvent event){
         btnLogin.setDisable(true);
+        btnLogin.setMnemonicParsing(true);
+        btnLogin.setText("_Iniciar Sesión");
+        btnExit.setMnemonicParsing(true);
+        btnExit.setText("_Salir");
         txtUsername.requestFocus();
         //Settear promptText
     }
     
     /**
      * Method for the login of a user
-     * @param event 
+     * @param event event that has caused the call to the function
      */
     public void login(ActionEvent event){
         
@@ -113,7 +122,10 @@ public class UILoginFXMLController extends GenericController {
             pfPassword.setStyle("-fx-border-color: red");
             lblPasswordError.setText("Error. La contraseña introducida"
                     + " es incorrecta.");
-        } catch(Exception e){
+        } catch(ServerNotAvailableException snae){
+            LOGGER.severe(snae.getMessage());
+            showErrorAlert(snae.getMessage());
+        }catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Se ha producido un error en el inicio de sesión.");
         }
@@ -121,7 +133,7 @@ public class UILoginFXMLController extends GenericController {
     
     /**
      * Method for the register of a new user
-     * @param event 
+     * @param event event that has caused the call to the function
      */
     public void register(ActionEvent event){
         //calls the logicManager register functio
@@ -147,23 +159,34 @@ public class UILoginFXMLController extends GenericController {
     
     /**
      * Method to exit the application
+     * @param event event that has caused the call to the function
      */
     public void exit(ActionEvent event){
-        try {
-            logicManager.close();
-            Platform.exit();
-        } catch (Exception ex) {
+         try{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cerrar aplicación");
+            alert.setContentText("¿Desea salir de la aplicación?");
+        
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get()== ButtonType.OK){
+                LOGGER.info("Exiting the application.");
+                logicManager.close();
+                Platform.exit();
+            }else{
+                LOGGER.info("Exit cancelled.");
+            } 
+        } catch(Exception ex){
             LOGGER.severe(ex.getMessage());
-            showErrorAlert("Error al intentar cerrar la aplicaciÃ³n.");
+            showErrorAlert("Error al intentar cerrar la aplicación.");
         }
     }
     
     /**
      * Method that checks if any any of the fillable fields are empty to enable 
      * or disable the "btnLogin" button depending on the result
-     * @param observable
-     * @param oldValue
-     * @param newValue 
+     * @param observable observable value
+     * @param oldValue old value of the element that has called to the method
+     * @param newValue new value of the element that has called to the method
      */
     public void onTextChanged(ObservableValue observable,
              String oldValue,
@@ -195,9 +218,9 @@ public class UILoginFXMLController extends GenericController {
     /**
      * Method to check if the text of a fillable field that has lost the focus
      * has the correct length
-     * @param observable
-     * @param oldValue
-     * @param newValue 
+     * @param observable observable value
+     * @param oldValue old value of the element that has called to the method
+     * @param newValue new value of the element that has called to the method
      */
     //--TOFIX
     public void onFocusChanged(ObservableValue observable,

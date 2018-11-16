@@ -11,6 +11,7 @@ import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
 
 
 /**
@@ -28,7 +29,8 @@ public interface ILogic {
      * @throws IncorrectPasswordException Exception that throws when the entered
      *  password doesn't match with the user's password
      */
-    public User login(User user) throws IncorrectLoginException, IncorrectPasswordException;
+    public User login(User user) throws IncorrectLoginException, 
+            IncorrectPasswordException, ServerNotAvailableException, Exception;
     
     /**
      * This method sends the user's username and password and it signs in if
@@ -38,7 +40,9 @@ public interface ILogic {
      * @throws LoginExistsException If the username already exists its thrown
      * @throws EmailExistsException If the email already exists its thrown
      */
-    public User register(User user) throws LoginExistsException, EmailExistsException, LoginEmailExistException;
+    public User register(User user) throws LoginExistsException, 
+            EmailExistsException, LoginEmailExistException, 
+            ServerNotAvailableException, Exception;
     
     /**
      * It makes sure that the user's logs out

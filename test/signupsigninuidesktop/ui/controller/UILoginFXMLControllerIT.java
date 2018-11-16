@@ -197,7 +197,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         write("login");
         clickOn("#pfPassword");
         verifyThat("#lblUsernameError", org.testfx.matcher.control.
-                LabeledMatchers.hasText("Error. El campo usuario "
+                LabeledMatchers.hasText("Error. El usuario "
                                 + "debe contener entre 8 y 30 caracteres."));
     }
     
@@ -212,8 +212,8 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         clickOn("#txtUsername");
         
         verifyThat("#lblPasswordError", org.testfx.matcher.control.
-                LabeledMatchers.hasText("Error. El campo contraseña "
-                                + "debe contener entre 8 y 30 caracteres."));
+                LabeledMatchers.hasText("Error. La contraseña "
+                            + "debe contener entre 8 y 30 caracteres."));
     }
     
     /**
@@ -229,9 +229,8 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
         verifyThat("#loginPane", isVisible());
-        //--TOFIX --> Poner texto correcto y correspondiente en ambos verify
         verifyThat("#lblUsernameError", org.testfx.matcher.control.
-                LabeledMatchers.hasText("Error. El usuario introducido"
+                LabeledMatchers.hasText("Error. El usuario introducido "
                 + "no existe."));
         verifyThat("#lblPasswordError", org.testfx.matcher.control.
                 LabeledMatchers.hasText(""));
@@ -250,7 +249,6 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
         verifyThat("#loginPane", isVisible());
-        //--TOFIX --> Poner texto correcto y correspondiente en ambos verify
         verifyThat("#lblUsernameError", org.testfx.matcher.control.
                 LabeledMatchers.hasText(""));
         verifyThat("#lblPasswordError", org.testfx.matcher.control.
@@ -273,11 +271,10 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         verifyThat("#loginPane", isVisible());
         //--TOFIX --> Poner texto correcto y correspondiente en ambos verify
         verifyThat("#lblUsernameError", org.testfx.matcher.control.
-                LabeledMatchers.hasText("Error. El usuario introducido"
+                LabeledMatchers.hasText("Error. El usuario introducido "
                 + "no existe."));
         verifyThat("#lblPasswordError", org.testfx.matcher.control.
-                LabeledMatchers.hasText("Error. La contraseña "
-                + "introducida es incorrecta."));
+                LabeledMatchers.hasText(""));
     }
     
     /**
