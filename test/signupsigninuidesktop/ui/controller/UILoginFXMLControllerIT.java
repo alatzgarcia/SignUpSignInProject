@@ -302,4 +302,20 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
         verifyThat("#registerPane", isVisible());
     }
     
+    /**
+     * Method to test that the application and UILogin view are still opened
+     * when the cancel option is pressed on exit confirmation dialog
+     */
+    @Test
+    public void test18_ExitBtnCancelOptionWorks(){
+        clickOn("#btnExit");
+        clickOn("Cancelar");
+        verifyThat("#loginPane", isVisible());
+    }
+    
+    /*@Test
+    public void test19_ExitBtnOkOptionCloses(){
+        clickOn("#btnExit");
+        clickOn("Aceptar");
+    }*/
 }
