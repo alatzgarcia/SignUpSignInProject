@@ -6,6 +6,7 @@
 package signupsigninuidesktop.ui.controller;
 
 
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
@@ -14,26 +15,31 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
+import static signupsigninuidesktop.ui.controller.GenericController.LOGGER;
 
 
 
 /**
  * Controller class for JavaFX view implementation of the Sign in Sign Up
  * application, this controller allows the user to register. The email and
- * user must be uniques.
- * @author Nerea Jimenez and Diego TravesÃ­
+ * user must be unique.
+ * @author Nerea Jimenez and Diego Travesí
  */
 public class UIRegisterFXMLController extends GenericController{
     
@@ -44,7 +50,7 @@ public class UIRegisterFXMLController extends GenericController{
      @FXML
      private TextField txtEmail;
      @FXML
-     private PasswordField pfPassword;
+     private PasswordField pfPasswordP;
      @FXML
      private PasswordField pfSafetyPassword;
      @FXML
@@ -59,13 +65,16 @@ public class UIRegisterFXMLController extends GenericController{
      private Label lblSafetyPasswordError;
      @FXML
      private Button btnRegister;
-     
+     @FXML
+     private Button btnBack;
+     @FXML
+     private Button btnExit;
          
      
      /**
       * This method sets the listeners and shows the window at the start
-      * of the program, set the title ans makes it unresizable.
-      * @param root Parent:
+      * of the program, sets the title ans makes it unresizable.
+      * @param root Parent: Parent object
       */
      
      public void initStage(Parent root){
@@ -86,16 +95,21 @@ public class UIRegisterFXMLController extends GenericController{
          txtUsername.textProperty().addListener(this::onTextChanged);
          txtFullName.textProperty().addListener(this::onTextChanged);
          txtEmail.textProperty().addListener(this::onTextChanged);
-         pfPassword.textProperty().addListener(this::onTextChanged);
+         pfPasswordP.textProperty().addListener(this::onTextChanged);
          pfSafetyPassword.textProperty().addListener(this::onTextChanged);
          
          txtUsername.focusedProperty().addListener(this::onFocusChanged);
          txtEmail.focusedProperty().addListener(this::onFocusChanged);
          txtFullName.focusedProperty().addListener(this::onFocusChanged);
-         pfPassword.focusedProperty().addListener(this::onFocusChanged);
+         pfPasswordP.focusedProperty().addListener(this::onFocusChanged);
          pfSafetyPassword.focusedProperty().addListener(this::onFocusChanged);
          
-         
+         btnRegister.setMnemonicParsing(true);
+         btnRegister.setText("_Registrar");
+         btnBack.setMnemonicParsing(true);
+         btnBack.setText("_Atras");
+         btnExit.setMnemonicParsing(true);
+         btnExit.setText("_Salir");
          //Shows primary window
           stage.show();
          
@@ -103,32 +117,35 @@ public class UIRegisterFXMLController extends GenericController{
      
     /**
      * Action event handler for the button Register in the UI, this method creates
-     * an user with the data the user has introduces and passes it to the logic 
-     * @param event AcionEvent
+     * an user with the data the user has introduce and passes it to the logic 
+     * @param event The ActionEvent
      */
      @FXML
     private void register(ActionEvent event) {
         try{
             //Creates an User with the user's inserted data
             User user = new User(txtUsername.getText(),txtEmail.getText(),
-                    txtFullName.getText(),pfPassword.getText());
+                    txtFullName.getText(),pfPasswordP.getText());
             //Sends the user to the logic
             User dbUser=logicManager.register(user);
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
-            Parent root = loader.load();
-            //Get controller from the loader
-            UILoggedFXMLController loggedController = loader.getController();
-            /*Set a reference in the controller 
-                for the UILogin view for the logic manager object           
-            */
-            loggedController.setLogicManager(logicManager);
-            //Send the user to the controller
-            loggedController.setUser(user);
-            //Initialize the primary stage of the application
-            loggedController.initStage(root);
             
-            stage.hide();
+            if(dbUser !=null){
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
+                Parent root = loader.load();
+                //Get controller from the loader
+                UILoggedFXMLController loggedController = loader.getController();
+                /*Set a reference in the controller 
+                    for the UILogin view for the logic manager object           
+                */
+                loggedController.setLogicManager(logicManager);
+                //Send the user to the controller
+                loggedController.setUser(user);
+                //Initialize the primary stage of the application
+                loggedController.initStage(root);
+
+                stage.hide();
+            }
         } catch(LoginEmailExistException leee){
             LOGGER.severe("Error. El usuario y el email ya existen.");
             txtUsername.setStyle("-fx-border-color: red");
@@ -147,6 +164,15 @@ public class UIRegisterFXMLController extends GenericController{
             txtEmail.setStyle("-fx-border-color: red");
             lblEmailError.setText("Error. El email ya existe");
             
+        }catch(ServerNotAvailableException snae){
+            LOGGER.severe(snae.getMessage());
+            showErrorAlert("El servidor no está disponible.");
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            LOGGER.severe(cpnfe.getMessage());
+            showErrorAlert("Error en los parámetros de configuración");
+        }catch(NotAvailableConnectionsException nace){
+            LOGGER.severe(nace.getMessage());
+            showErrorAlert("Error. No hay conexiones disponibles");
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error en el inicio de sesión.");
@@ -155,7 +181,7 @@ public class UIRegisterFXMLController extends GenericController{
     
     /**
      * Action event handler for the button Back in the UI. 
-     * @param event AcionEvent
+     * @param event The ActionEvent
      */
     @FXML
     private void returnToLogin(ActionEvent event) {
@@ -164,15 +190,26 @@ public class UIRegisterFXMLController extends GenericController{
     
     /**
      * Action event handler for the button Exit in the UI. 
-     * @param event AcionEvent
+     * @param event The Action Event
      */
     @FXML
     private void exit(ActionEvent event) {
-        Platform.exit();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Cerrar Sesión");
+        alert.setContentText("¿Desea cerrar sesion?");
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get()== ButtonType.OK){
+             Platform.exit();
+        }
         
     }
     
-    //The code when the window opens
+    /**
+     * Method for the WindowEvent event. Sets the initial stage of the window
+     * when it opens
+     * @param event The WindowEvent
+     */
     private void handleWindowShowing (WindowEvent event){
         //The Register button is disabled
         btnRegister.setDisable(true);
@@ -198,12 +235,11 @@ public class UIRegisterFXMLController extends GenericController{
             String oldValue,
             String newValue){
         
-        LOGGER.info("Text changed");
-        
+               
         if(this.txtUsername.getText().trim().equals("")||
                 this.txtEmail.getText().trim().equals("")||
                 this.txtFullName.getText().trim().equals("")||
-                this.pfPassword.getText().trim().equals("")||
+                this.pfPasswordP.getText().trim().equals("")||
                 this.pfSafetyPassword.getText().trim().equals("")){
                 
             
@@ -216,7 +252,13 @@ public class UIRegisterFXMLController extends GenericController{
             */
             if(checkUsernametc()&&checkEmailtc()&&checkFullNametc()
                     &&checkPasswordtc()&&checkSafetyPasswordtc()){
+                lblUsernameError.setText("");
+                lblFullnameError.setText("");
+                lblEmailError.setText("");
+                lblPasswordError.setText("");
+                lblSafetyPasswordError.setText("");
                 btnRegister.setDisable(false);
+                
             }else{
                 btnRegister.setDisable(true);
             }
@@ -244,7 +286,7 @@ public class UIRegisterFXMLController extends GenericController{
                     checkFullName();
                 }else if (field==txtEmail){
                     checkEmail();
-                }else if(field==pfPassword){
+                }else if(field==pfPasswordP){
                     checkPassword();
                 }else if(field==pfSafetyPassword){
                     checkSafetyPassword();
@@ -280,7 +322,7 @@ public class UIRegisterFXMLController extends GenericController{
     private void checkFullName() {
         if(txtFullName.getText().trim().length()<fullNameMinLength||txtFullName.getText().trim().length()>fullNameMaxLength){
             lblFullnameError.setText("El nombre "
-                                + "debe contener entre 8 y 50 caracteres.");
+                                + "debe contener entre 5 y 50 caracteres.");
             txtFullName.setStyle("-fx-border-color: red");
             
         }else{
@@ -314,15 +356,15 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private void checkPassword() {
         checkSafetyPassword();
-        if(pfPassword.getText().trim().length()<userPasswordMinLength||
-                pfPassword.getText().trim().length()>userPasswordMaxLength){
+        if(pfPasswordP.getText().trim().length()<userPasswordMinLength||
+                pfPasswordP.getText().trim().length()>userPasswordMaxLength){
             lblPasswordError.setText("La "
                                 + "debe contener entre 8 y 30 caracteres.");
-            pfPassword.setStyle("-fx-border-color: red");
+            pfPasswordP.setStyle("-fx-border-color: red");
             
         }else{
             lblPasswordError.setText("");
-            pfPassword.setStyle("");
+            pfPasswordP.setStyle("");
             
         }
     }
@@ -340,7 +382,7 @@ public class UIRegisterFXMLController extends GenericController{
                                 + "debe contener entre 8 y 30 caracteres.");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                       
-        }else if (!pfPassword.getText().equals(pfSafetyPassword.getText())){
+        }else if (!pfPasswordP.getText().equals(pfSafetyPassword.getText())){
             lblSafetyPasswordError.setText("Las contraseñas no coinciden");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                
@@ -358,8 +400,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkUsernametc(){
-         return(txtUsername.getText().trim().length()>userPasswordMinLength&&
-                 txtUsername.getText().trim().length()<userPasswordMaxLength); 
+         return(txtUsername.getText().trim().length()>=userPasswordMinLength&&
+                 txtUsername.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
@@ -369,8 +411,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkFullNametc() {
-         return (txtFullName.getText().trim().length()>fullNameMinLength&&
-                 txtFullName.getText().trim().length()<fullNameMaxLength); 
+         return (txtFullName.getText().trim().length()>=fullNameMinLength&&
+                 txtFullName.getText().trim().length()<=fullNameMaxLength); 
         
     }
     
@@ -381,8 +423,8 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private boolean checkEmailtc() {
          return (txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")&&
-                 txtEmail.getText().trim().length()>userPasswordMinLength&&
-                 txtEmail.getText().trim().length()<userPasswordMaxLength); 
+                 txtEmail.getText().trim().length()>=userPasswordMinLength&&
+                 txtEmail.getText().trim().length()<=userPasswordMaxLength); 
         
     }
 
@@ -392,8 +434,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkPasswordtc() {
-         return (pfPassword.getText().trim().length()>=userPasswordMinLength&&
-                 pfPassword.getText().trim().length()<userPasswordMaxLength); 
+         return (pfPasswordP.getText().trim().length()>=userPasswordMinLength&&
+                 pfPasswordP.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
@@ -404,8 +446,8 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private boolean checkSafetyPasswordtc() {
          return (pfSafetyPassword.getText().trim().length()>=userPasswordMinLength&&
-                    pfSafetyPassword.getText().trim().length()<userPasswordMaxLength&&
-                    pfSafetyPassword.getText().equals(pfPassword.getText())); 
+                    pfSafetyPassword.getText().trim().length()<=userPasswordMaxLength&&
+                    pfSafetyPassword.getText().equals(pfPasswordP.getText())); 
         
     }
     

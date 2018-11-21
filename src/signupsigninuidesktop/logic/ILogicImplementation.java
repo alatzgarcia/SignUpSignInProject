@@ -12,8 +12,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.Message;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
@@ -51,11 +53,14 @@ public class ILogicImplementation implements ILogic{
      * @throws signupsigninuidesktop.exceptions.IncorrectPasswordException
      */
     @Override
-    public User login(User user) throws IncorrectLoginException, IncorrectPasswordException {
+    public User login(User user) throws IncorrectLoginException, 
+            IncorrectPasswordException, ServerNotAvailableException, 
+            GenericException,NotAvailableConnectionsException,ConfigurationParameterNotFoundException {
         try{
-            
             start();
             
+            LOGGER.info(ip);
+            LOGGER.info(String.valueOf(port));
             oos = new ObjectOutputStream(client.getOutputStream());
             LOGGER.info("Sending message to the server...");
             oos.writeObject(new Message("login", user));
@@ -63,7 +68,6 @@ public class ILogicImplementation implements ILogic{
             LOGGER.info("Awaiting for the server message...");
             ois = new ObjectInputStream(client.getInputStream());
             Message msg = (Message)ois.readObject();
-                        
             
             LOGGER.info("Server message arrived to the client.");
             LOGGER.info(msg.getMessage());
@@ -79,19 +83,26 @@ public class ILogicImplementation implements ILogic{
                 throw new ServerNotAvailableException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
-            } else{
-                return null; 
+            } else if(msg.getMessage().equalsIgnoreCase("configParamNotFound")){
+                throw new ConfigurationParameterNotFoundException(); 
+            } else if(msg.getMessage().equalsIgnoreCase("notAvailableConnections")){
+                throw new NotAvailableConnectionsException(); 
+            }else{
+                throw new GenericException(); 
             }
         } catch(IncorrectPasswordException ipe){
             throw new IncorrectPasswordException();
-           
-        
         } catch(IncorrectLoginException ile){
             throw new IncorrectLoginException();
-           
+        } catch(ServerNotAvailableException snae){
+            throw new ServerNotAvailableException();
+        }catch(NotAvailableConnectionsException nace){
+            throw new NotAvailableConnectionsException();           
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            throw new ConfigurationParameterNotFoundException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
+            throw new GenericException(); 
         } finally {
             try {
                 if(oos != null){
@@ -214,7 +225,12 @@ public class ILogicImplementation implements ILogic{
      * Method that takes the parameters for the socket from a config file.
      */
     private void getData() {
-        Properties config = new Properties();
+        ip=ResourceBundle.getBundle("signupsigninuidesktop.config.connection")
+                          .getString("ip");
+        port=Integer.parseInt(ResourceBundle.getBundle("signupsigninuidesktop.config.connection")
+                          .getString("port"));
+        
+        /*Properties config = new Properties();
 	FileInputStream input = null;
 	try {
             input = new FileInputStream("src/signupsigninuidesktop/config/connection.properties");
@@ -233,7 +249,7 @@ public class ILogicImplementation implements ILogic{
             } catch (IOException ex) {
                 Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
             } 
-	}
+	}*/
     }
 }
 
