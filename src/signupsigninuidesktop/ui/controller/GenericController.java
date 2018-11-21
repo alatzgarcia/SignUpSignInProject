@@ -17,15 +17,40 @@ import signupsigninuidesktop.logic.ILogic;
  * @author Alatz
  */
 public class GenericController {
-    
+    /**
+     * Logger is used to display messages in the console
+     */
     protected static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.ui.controller");
+    /**
+     * The min length for all the fields except email and user's fullname
+     */
     protected final int userPasswordMinLength = 8;
+    /**
+     * The max length for all the fields except email and user's fullname
+     */
     protected final int userPasswordMaxLength = 30;
+    /**
+     * The min length of the user's fullname
+     */
     protected final int fullNameMinLength = 5;
+    /**
+     * The max length of the user's fullname
+     */
     protected final int fullNameMaxLength = 50;
     
+    
+    
+    /**
+     * The Ilogic interface
+     */
     protected ILogic logicManager;
+    /**
+     * The stage
+     */
     protected Stage stage;
+    /**
+     * The User where the data will be stored
+     */
     protected User user;
 
     /**
@@ -59,7 +84,7 @@ public class GenericController {
     }
     /**
      * Sets the user
-     * @param user 
+     * @param user User
      */
     public void setUser(User user){
         this.user=user;

@@ -118,7 +118,7 @@ public class ILogicImplementation implements ILogic{
      * @throws signupsigninuidesktop.exceptions.LoginEmailExistException
      */
     @Override
-    public User register(User user) throws LoginExistsException, EmailExistsException,LoginEmailExistException{
+    public User register(User user) throws LoginExistsException, EmailExistsException,LoginEmailExistException,GenericException{
         try{
             start();
            
@@ -153,7 +153,7 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
             }else{
-                return null; 
+                throw new GenericException(); 
             }
          } catch(LoginExistsException lee){
             throw new LoginExistsException();
@@ -167,7 +167,9 @@ public class ILogicImplementation implements ILogic{
             throw new LoginEmailExistException();
            
            
-        } catch(Exception e){
+        }catch(GenericException ge){
+            throw new GenericException();
+        }catch(Exception e){
             LOGGER.severe(e.getMessage());
             return null;
         } finally {

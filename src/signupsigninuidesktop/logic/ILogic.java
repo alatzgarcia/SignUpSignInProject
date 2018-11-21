@@ -7,10 +7,14 @@ package signupsigninuidesktop.logic;
 
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
+import signupsigninuidesktop.exceptions.GenericException;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
+import signupsigninuidesktop.exceptions.RegisterFailedException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
 
 
 /**
@@ -38,7 +42,7 @@ public interface ILogic {
      * @throws LoginExistsException If the username already exists its thrown
      * @throws EmailExistsException If the email already exists its thrown
      */
-    public User register(User user) throws LoginExistsException, EmailExistsException, LoginEmailExistException;
+    public User register(User user) throws LoginExistsException, EmailExistsException, LoginEmailExistException,NotAvailableConnectionsException,ServerNotAvailableException,RegisterFailedException,GenericException;
     
     /**
      * It makes sure that the user's logs out

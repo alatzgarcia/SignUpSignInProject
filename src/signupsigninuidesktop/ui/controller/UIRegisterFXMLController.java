@@ -6,6 +6,9 @@
 package signupsigninuidesktop.ui.controller;
 
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
@@ -14,7 +17,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,10 +27,16 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.swing.UIManager;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
+import signupsigninuidesktop.exceptions.GenericException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
+import signupsigninuidesktop.exceptions.RegisterFailedException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
+import static signupsigninuidesktop.ui.controller.GenericController.LOGGER;
 
 
 
@@ -33,39 +44,72 @@ import signupsigninuidesktop.exceptions.LoginExistsException;
  * Controller class for JavaFX view implementation of the Sign in Sign Up
  * application, this controller allows the user to register. The email and
  * user must be uniques.
- * @author Nerea Jimenez and Diego TravesÃ­
+ * @author Nerea Jimenez and Diego Travesí
  */
 public class UIRegisterFXMLController extends GenericController{
-    
+     /**
+      * The text field for the login username
+      */
      @FXML
      private TextField txtUsername;
      @FXML
+     /**
+      * The text field for the full name of the user
+      */
      private TextField txtFullName;
+     /**
+      * The text field for the email
+      */
      @FXML
      private TextField txtEmail;
+     /**
+      * The text field for the password
+      */
      @FXML
-     private PasswordField pfPassword;
+     private PasswordField pfPasswordReg;
+     /**
+      * The text field for the repeated password
+      */
      @FXML
      private PasswordField pfSafetyPassword;
+     /**
+      * The label for the username error
+      */
      @FXML
      private Label lblUsernameError;
+     /**
+      * The label for the password error
+      */
      @FXML
      private Label lblPasswordError;
+     /**
+      * The label for the password error
+      */
      @FXML
      private Label lblFullnameError;
+     /**
+      * The label for the email error
+      */
      @FXML
      private Label lblEmailError;
+     /**
+      * The label for the password error
+      */
      @FXML
      private Label lblSafetyPasswordError;
+     /**
+      * The register button
+      */
      @FXML
      private Button btnRegister;
+    
      
          
      
      /**
       * This method sets the listeners and shows the window at the start
       * of the program, set the title ans makes it unresizable.
-      * @param root Parent:
+      * @param root Parent: The base class for all the nodes
       */
      
      public void initStage(Parent root){
@@ -86,13 +130,13 @@ public class UIRegisterFXMLController extends GenericController{
          txtUsername.textProperty().addListener(this::onTextChanged);
          txtFullName.textProperty().addListener(this::onTextChanged);
          txtEmail.textProperty().addListener(this::onTextChanged);
-         pfPassword.textProperty().addListener(this::onTextChanged);
+         pfPasswordReg.textProperty().addListener(this::onTextChanged);
          pfSafetyPassword.textProperty().addListener(this::onTextChanged);
          
          txtUsername.focusedProperty().addListener(this::onFocusChanged);
          txtEmail.focusedProperty().addListener(this::onFocusChanged);
          txtFullName.focusedProperty().addListener(this::onFocusChanged);
-         pfPassword.focusedProperty().addListener(this::onFocusChanged);
+         pfPasswordReg.focusedProperty().addListener(this::onFocusChanged);
          pfSafetyPassword.focusedProperty().addListener(this::onFocusChanged);
          
          
@@ -104,14 +148,14 @@ public class UIRegisterFXMLController extends GenericController{
     /**
      * Action event handler for the button Register in the UI, this method creates
      * an user with the data the user has introduces and passes it to the logic 
-     * @param event AcionEvent
+     * @param event ActionEvent: represent an action
      */
      @FXML
-    private void register(ActionEvent event) {
+    private void register(ActionEvent event) throws NotAvailableConnectionsException, ServerNotAvailableException, RegisterFailedException, IOException {
         try{
             //Creates an User with the user's inserted data
             User user = new User(txtUsername.getText(),txtEmail.getText(),
-                    txtFullName.getText(),pfPassword.getText());
+                    txtFullName.getText(),pfPasswordReg.getText());
             //Sends the user to the logic
             User dbUser=logicManager.register(user);
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -147,7 +191,7 @@ public class UIRegisterFXMLController extends GenericController{
             txtEmail.setStyle("-fx-border-color: red");
             lblEmailError.setText("Error. El email ya existe");
             
-        } catch(Exception e){
+        } catch(GenericException e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error en el inicio de sesión.");
         }
@@ -155,7 +199,7 @@ public class UIRegisterFXMLController extends GenericController{
     
     /**
      * Action event handler for the button Back in the UI. 
-     * @param event AcionEvent
+     * @param event ActionEvent: represent an action
      */
     @FXML
     private void returnToLogin(ActionEvent event) {
@@ -164,20 +208,33 @@ public class UIRegisterFXMLController extends GenericController{
     
     /**
      * Action event handler for the button Exit in the UI. 
-     * @param event AcionEvent
+     * @param event ActionEvent: represent an action
      */
     @FXML
     private void exit(ActionEvent event) {
-        Platform.exit();
-        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Salir");
+        alert.setContentText("¿Desea salir de la aplicación?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            Platform.exit();
+        }
+
     }
     
-    //The code when the window opens
+    /**
+     * The operations that will be done at the showing at the application
+     * @param event Event: related to window showing/hiding actions.
+     */
     private void handleWindowShowing (WindowEvent event){
         //The Register button is disabled
         btnRegister.setDisable(true);
         // The first field will be focused
         txtUsername.requestFocus();
+        
+        
+        
         
         //We declare the tooltip for the register button
         btnRegister.setTooltip(
@@ -197,13 +254,10 @@ public class UIRegisterFXMLController extends GenericController{
     private void onTextChanged(ObservableValue observable,
             String oldValue,
             String newValue){
-        
-        LOGGER.info("Text changed");
-        
         if(this.txtUsername.getText().trim().equals("")||
                 this.txtEmail.getText().trim().equals("")||
                 this.txtFullName.getText().trim().equals("")||
-                this.pfPassword.getText().trim().equals("")||
+                this.pfPasswordReg.getText().trim().equals("")||
                 this.pfSafetyPassword.getText().trim().equals("")){
                 
             
@@ -244,7 +298,7 @@ public class UIRegisterFXMLController extends GenericController{
                     checkFullName();
                 }else if (field==txtEmail){
                     checkEmail();
-                }else if(field==pfPassword){
+                }else if(field==pfPasswordReg){
                     checkPassword();
                 }else if(field==pfSafetyPassword){
                     checkSafetyPassword();
@@ -299,7 +353,6 @@ public class UIRegisterFXMLController extends GenericController{
         if(!txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")){
             lblEmailError.setText("Email no válido");
             txtEmail.setStyle("-fx-border-color: red");
-            
         }else {
             lblEmailError.setText("");
             txtEmail.setStyle("");
@@ -314,15 +367,15 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private void checkPassword() {
         checkSafetyPassword();
-        if(pfPassword.getText().trim().length()<userPasswordMinLength||
-                pfPassword.getText().trim().length()>userPasswordMaxLength){
+        if(pfPasswordReg.getText().trim().length()<userPasswordMinLength||
+                pfPasswordReg.getText().trim().length()>userPasswordMaxLength){
             lblPasswordError.setText("La "
                                 + "debe contener entre 8 y 30 caracteres.");
-            pfPassword.setStyle("-fx-border-color: red");
+            pfPasswordReg.setStyle("-fx-border-color: red");
             
         }else{
             lblPasswordError.setText("");
-            pfPassword.setStyle("");
+            pfPasswordReg.setStyle("");
             
         }
     }
@@ -340,7 +393,7 @@ public class UIRegisterFXMLController extends GenericController{
                                 + "debe contener entre 8 y 30 caracteres.");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                       
-        }else if (!pfPassword.getText().equals(pfSafetyPassword.getText())){
+        }else if (!pfPasswordReg.getText().equals(pfSafetyPassword.getText())){
             lblSafetyPasswordError.setText("Las contraseñas no coinciden");
             pfSafetyPassword.setStyle("-fx-border-color: red");
                
@@ -355,61 +408,58 @@ public class UIRegisterFXMLController extends GenericController{
     /**
      * Checks if the username of the user fullfills the minimum and maximun length
      * when the text change (onTextChange method)
-     * @return 
+     * @return Boolean: If the text in the field fullfills the format, returns true
      */
     private boolean checkUsernametc(){
-         return(txtUsername.getText().trim().length()>userPasswordMinLength&&
-                 txtUsername.getText().trim().length()<userPasswordMaxLength); 
+         return(txtUsername.getText().trim().length()>=userPasswordMinLength&&
+                 txtUsername.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
     /**
      * Checks if the full name of the user fullfills the minimum and maximun length
      * when the text change (onTextChange method)
-     * @return 
+     * @return Boolean: If the text in the field fullfills the format, returns true
      */
     private boolean checkFullNametc() {
-         return (txtFullName.getText().trim().length()>fullNameMinLength&&
-                 txtFullName.getText().trim().length()<fullNameMaxLength); 
+         return (txtFullName.getText().trim().length()>=fullNameMinLength&&
+                 txtFullName.getText().trim().length()<=fullNameMaxLength); 
         
     }
     
     /**
      * Checks if the email of the user fullfills the email format
      * when the text change (onTextChange method)
-     * @return 
+     * @return Boolean: If the text in the field fullfills the format, returns true
      */
     private boolean checkEmailtc() {
          return (txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")&&
-                 txtEmail.getText().trim().length()>userPasswordMinLength&&
-                 txtEmail.getText().trim().length()<userPasswordMaxLength); 
+                 txtEmail.getText().trim().length()>=userPasswordMinLength&&
+                 txtEmail.getText().trim().length()<=userPasswordMaxLength); 
         
     }
 
     /**
      * Checks if the password of the user fullfills the minimum and maximun length
      * when the text change (onTextChange method)
-     * @return 
+     * @return Boolean: If the text in the field fullfills the format, returns true
      */
     private boolean checkPasswordtc() {
-         return (pfPassword.getText().trim().length()>=userPasswordMinLength&&
-                 pfPassword.getText().trim().length()<userPasswordMaxLength); 
+         return (pfPasswordReg.getText().trim().length()>=userPasswordMinLength&&
+                 pfPasswordReg.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
     /**
      * Checks if the password of the user fullfills the minimum and maximun length
      * and its equals to the previous password when the text change (onTextChange method)
-     * @return 
+     * @return Boolean: If the text in the field fullfills the format, returns true
      */
     private boolean checkSafetyPasswordtc() {
          return (pfSafetyPassword.getText().trim().length()>=userPasswordMinLength&&
-                    pfSafetyPassword.getText().trim().length()<userPasswordMaxLength&&
-                    pfSafetyPassword.getText().equals(pfPassword.getText())); 
+                    pfSafetyPassword.getText().trim().length()<=userPasswordMaxLength&&
+                    pfSafetyPassword.getText().equals(pfPasswordReg.getText())); 
         
     }
-    
-   
-
 }
 
