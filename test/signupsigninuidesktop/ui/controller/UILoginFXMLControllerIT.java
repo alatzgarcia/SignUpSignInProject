@@ -8,6 +8,7 @@ package signupsigninuidesktop.ui.controller;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.*;
 import org.testfx.framework.junit.ApplicationTest;
@@ -38,6 +39,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
     /**
      * Method to test the init stage of the UILogin
      */
+    @Ignore
     @Test
     public void test01_InitStage(){
         verifyThat("#txtUsername", hasText(""));
@@ -54,6 +56,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test the button login is enabled when both textfields are
      * correctly filled
      */
+    @Ignore
     @Test
     public void test02_BtnLoginEnabled(){
         clickOn("#txtUsername");
@@ -67,6 +70,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the button login is disabled if the login textfield
      * is filled with a shorter text than needed
      */
+    @Ignore
     @Test
     public void test03_BtnLoginDisabledOnShortLogin(){
         clickOn("#txtUsername");
@@ -80,6 +84,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the button login is disabled if the login textfield
      * is filled with a longer text than needed
      */
+    @Ignore
     @Test
     public void test04_BtnLoginDisabledOnLongLogin(){
         clickOn("#txtUsername");
@@ -93,6 +98,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the button login is disabled if the password
      * passwordfield is filled with a shorter text than needed
      */
+    @Ignore
     @Test
     public void test05_BtnLoginDisabledOnShortPassword(){
         clickOn("#txtUsername");
@@ -106,6 +112,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the button login is disabled if the password
      * passwordfield is filled with a larger text than needed
      */
+    @Ignore
     @Test
     public void test06_BtnLoginDisabledOnLongPassword(){
         clickOn("#txtUsername");
@@ -120,6 +127,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * again when its txtUsername textfield's text goes back to being too
      * short again
      */
+    @Ignore
     @Test
     public void test07_BtnLoginDisablesOnShortLogin(){
         clickOn("#txtUsername");
@@ -138,6 +146,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * again when its txtUsername textfield's text goes back to being too
      * long again
      */
+    @Ignore
     @Test
     public void test08_BtnLoginDisablesOnLongLogin(){
         clickOn("#txtUsername");
@@ -156,6 +165,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * again when its pfPassword passwordfield's text goes back to being
      * too short again
      */
+    @Ignore
     @Test
     public void test09_BtnLoginDisablesOnShortPassword(){
         clickOn("#txtUsername");
@@ -174,6 +184,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * again when its pfPassword passwordfield's text goes back to being
      * too long again
      */
+    @Ignore
     @Test
     public void test10_BtnLoginDisablesOnLongPassword(){
         clickOn("#txtUsername");
@@ -191,6 +202,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the correct message is shown when txtUsername
      * textfield loses the focus with wrong data on it
      */
+    @Ignore
     @Test
     public void test11_LoginErrorTextAppearsOnFocusChange(){
         clickOn("#txtUsername");
@@ -205,6 +217,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the correct message is shown when pfPassword
      * passwordfield loses the focus with wrong data on it
      */
+    @Ignore
     @Test
     public void test12_PasswordErrorTextAppearsOnFocusChange(){
         clickOn("#pfPassword");
@@ -260,6 +273,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the correct message is shown when both login and
      * password are wrong on login operation
      */
+    @Ignore
     @Test
     public void test15_LoginPasswordError(){
         clickOn("#txtUsername");
@@ -296,6 +310,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the UIRegister is visible when the 
      * hyperlink is clicked
      */
+    @Ignore
     @Test 
     public void test17_IsRegisterViewVisible(){
         clickOn("#hlRegister");
@@ -306,6 +321,7 @@ public class UILoginFXMLControllerIT extends ApplicationTest{
      * Method to test that the application and UILogin view are still opened
      * when the cancel option is pressed on exit confirmation dialog
      */
+    @Ignore
     @Test
     public void test18_ExitBtnCancelOptionWorks(){
         clickOn("#btnExit");

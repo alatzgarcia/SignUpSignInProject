@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import signupsigninutilities.model.Message;
@@ -45,7 +46,7 @@ public class ILogicImplementation implements ILogic{
     
     /**
      * Method that connects client and server for the "login" of a user 
-     * @param user
+     * @param user user received from the user interface
      * @return logged in user
      * @throws signupsigninuidesktop.exceptions.IncorrectLoginException
      * @throws signupsigninuidesktop.exceptions.IncorrectPasswordException
@@ -91,7 +92,7 @@ public class ILogicImplementation implements ILogic{
             throw new ServerNotAvailableException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
+            throw new GenericException();
         } finally {
             try {
                 if(oos != null){
@@ -111,7 +112,7 @@ public class ILogicImplementation implements ILogic{
     
     /**
      * Method that connects client and server for the "register" of a user
-     * @param user
+     * @param user user received from the user interface
      * @return registered user
      * @throws signupsigninuidesktop.exceptions.LoginExistsException
      * @throws signupsigninuidesktop.exceptions.EmailExistsException
@@ -155,7 +156,7 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
             }else{
-                return null; 
+                throw new GenericException(); 
             }
          } catch(LoginExistsException lee){
             throw new LoginExistsException();
@@ -188,7 +189,7 @@ public class ILogicImplementation implements ILogic{
     
     /**
      * Method to close the socket for the client when he logs out
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void close() throws Exception{
@@ -202,6 +203,7 @@ public class ILogicImplementation implements ILogic{
     
     /**
      * Method to start the socket for the client
+     * @throws IOException 
      */
     public void start() throws IOException{
         getData();
@@ -215,15 +217,16 @@ public class ILogicImplementation implements ILogic{
         Properties config = new Properties();
 	FileInputStream input = null;
 	try {
-            input = new FileInputStream("src/signupsigninuidesktop/config/connection.properties");
+            /*input = new FileInputStream("src/signupsigninuidesktop/config/config.properties");
             config.load(input); 
             ip = config.getProperty("ip");
-            port=Integer.parseInt(config.getProperty("port"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
-
-        } catch (IOException ex) {
-            Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            port=Integer.parseInt(config.getProperty("port"));*/
+            port = Integer.parseInt(ResourceBundle.getBundle
+                ("signupsigninuidesktop.config.config").getString("port"));
+            ip = (ResourceBundle.getBundle
+                ("signupsigninuidesktop.config.config").getString("ip"));
+        } catch (Exception ex) {
+            LOGGER.severe(ex.getMessage());
         } finally {
             if (input != null)
 		try {

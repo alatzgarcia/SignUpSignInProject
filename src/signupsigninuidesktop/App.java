@@ -25,7 +25,8 @@ public class App extends Application {
     
     /**
      * Main method of the client application
-     * @param args 
+     * @param args arguments that the application receives on its
+     * initialization
      */
     public static void main(String[] args){
         launch(args);
@@ -33,11 +34,10 @@ public class App extends Application {
 
     /**
      * Method start for the JavaFX Application
-     * @param primaryStage
-     * @throws Exception 
+     * @param primaryStage the first/primary stage of the application
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try{
             //Get the logic manager object for the initial stage
             ILogic logicManager = ILogicImplementationFactory.getLogic();

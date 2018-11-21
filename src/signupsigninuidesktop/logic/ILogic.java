@@ -28,6 +28,7 @@ public interface ILogic {
      *  doesn't exist for the login
      * @throws IncorrectPasswordException Exception that throws when the entered
      *  password doesn't match with the user's password
+     * @throws signupsigninuidesktop.exceptions.ServerNotAvailableException
      */
     public User login(User user) throws IncorrectLoginException, 
             IncorrectPasswordException, ServerNotAvailableException, Exception;
@@ -39,6 +40,8 @@ public interface ILogic {
      * @return User
      * @throws LoginExistsException If the username already exists its thrown
      * @throws EmailExistsException If the email already exists its thrown
+     * @throws signupsigninuidesktop.exceptions.LoginEmailExistException
+     * @throws signupsigninuidesktop.exceptions.ServerNotAvailableException
      */
     public User register(User user) throws LoginExistsException, 
             EmailExistsException, LoginEmailExistException, 

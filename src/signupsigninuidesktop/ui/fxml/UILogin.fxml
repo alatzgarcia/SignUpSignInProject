@@ -67,8 +67,7 @@
          <children>
             <AnchorPane prefHeight="59.0" prefWidth="641.0">
                <children>
-                  <Button fx:id="btnExit" layoutX="544.0" layoutY="12.0" minWidth="44.0" mnemonicParsing="false" 
-                          prefHeight="44.0" prefWidth="73.0" style="-fx-background-color: #42A5F5;" text="Salir">
+                  <Button fx:id="btnExit" layoutX="544.0" layoutY="12.0" minWidth="44.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="73.0" style="-fx-background-color: #42A5F5;" text="Salir">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

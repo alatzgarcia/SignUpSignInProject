@@ -32,18 +32,39 @@ import static signupsigninuidesktop.ui.controller.GenericController.LOGGER;
  * @author Alatz
  */
 public class UILoginFXMLController extends GenericController {
+    /**
+     * TextField for the login of the user
+     */
     @FXML
     private TextField txtUsername;
+    /**
+     * PasswordField for the password of the user
+     */
     @FXML
     private PasswordField pfPassword; 
+    /**
+     * Label to show error on incorrect login
+     */
     @FXML
     private Label lblUsernameError;
+    /**
+     * Label to show error on incorrect password
+     */
     @FXML
     private Label lblPasswordError;
+    /**
+     * Button for the login operation
+     */
     @FXML
     private Button btnLogin;
+    /**
+     * Button to exit the application
+     */
     @FXML
     private Button btnExit;
+    /**
+     * HyperLink to go to the register view
+     */
     @FXML
     private Hyperlink hlRegister;
     

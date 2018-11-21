@@ -30,7 +30,7 @@ public class GenericController {
 
     /**
      * Shows an alert with an error message
-     * @param errorMsg 
+     * @param errorMsg error message to show on alert
      */
     protected void showErrorAlert(String errorMsg){
         //Shows error dialog.
@@ -44,7 +44,7 @@ public class GenericController {
      
     /**
      * Sets the logic Manager
-     * @param logicManager 
+     * @param logicManager manager of the client application logic side
      */
     public void setLogicManager(ILogic logicManager){
         this.logicManager = logicManager;
@@ -52,14 +52,14 @@ public class GenericController {
     
     /**
      * Sets the stage
-     * @param stage 
+     * @param stage stage for the window that is displayed
      */
     public void setStage(Stage stage){
         this.stage = stage;
     }
     /**
      * Sets the user
-     * @param user 
+     * @param user User object
      */
     public void setUser(User user){
         this.user=user;
