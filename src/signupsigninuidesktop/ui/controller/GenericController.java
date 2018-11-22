@@ -18,7 +18,7 @@ import signupsigninuidesktop.logic.ILogic;
  */
 public class GenericController {
     
-    protected static final Logger LOGGER = Logger.getLogger("signupsigninuidesktop.ui.controller");
+    protected static final Logger LOGGER = Logger.getLogger("/signupsigninuidesktop.ui.controller");
     protected final int userPasswordMinLength = 8;
     protected final int userPasswordMaxLength = 30;
     protected final int fullNameMinLength = 5;
