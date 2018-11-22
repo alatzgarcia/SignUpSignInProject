@@ -233,7 +233,11 @@ public class ILogicImplementation implements ILogic{
      * Method that takes the parameters for the socket from a config file.
      */
     private void getData() {
-       Properties config = new Properties();
+        ip=ResourceBundle.getBundle("signupsigninuidesktop.config.connection")
+                          .getString("ip");
+        port=Integer.parseInt(ResourceBundle.getBundle("signupsigninuidesktop.config.connection")
+                          .getString("port"));
+       /*Properties config = new Properties();
 	FileInputStream input = null;
 	try {
             input = new FileInputStream("src/signupsigninuidesktop/config/connection.properties");
@@ -252,7 +256,7 @@ public class ILogicImplementation implements ILogic{
             } catch (IOException ex) {
                 Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
             } 
-	}
+	}*/
     }
 }
 
