@@ -22,10 +22,14 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
 import signupsigninuidesktop.exceptions.LoginEmailExistException;
 import signupsigninuidesktop.exceptions.LoginExistsException;
+import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
+import static signupsigninuidesktop.ui.controller.GenericController.LOGGER;
 
 
 
@@ -33,7 +37,7 @@ import signupsigninuidesktop.exceptions.LoginExistsException;
  * Controller class for JavaFX view implementation of the Sign in Sign Up
  * application, this controller allows the user to register. The email and
  * user must be uniques.
- * @author Nerea Jimenez and Diego TravesÃ­
+ * @author Nerea Jimenez and Diego Travesí­
  */
 public class UIRegisterFXMLController extends GenericController{
     
@@ -147,6 +151,15 @@ public class UIRegisterFXMLController extends GenericController{
             txtEmail.setStyle("-fx-border-color: red");
             lblEmailError.setText("Error. El email ya existe");
             
+        }catch(ServerNotAvailableException snae){
+            LOGGER.severe(snae.getMessage());
+            showErrorAlert("El servidor no está disponible.");
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            LOGGER.severe(cpnfe.getMessage());
+            showErrorAlert("Error en los parámetros de configuración");
+        }catch(NotAvailableConnectionsException nace){
+            LOGGER.severe(nace.getMessage());
+            showErrorAlert("Error. No hay conexiones disponibles");
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error en el inicio de sesión.");
@@ -358,8 +371,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkUsernametc(){
-         return(txtUsername.getText().trim().length()>userPasswordMinLength&&
-                 txtUsername.getText().trim().length()<userPasswordMaxLength); 
+         return(txtUsername.getText().trim().length()>=userPasswordMinLength&&
+                 txtUsername.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
@@ -369,8 +382,8 @@ public class UIRegisterFXMLController extends GenericController{
      * @return 
      */
     private boolean checkFullNametc() {
-         return (txtFullName.getText().trim().length()>fullNameMinLength&&
-                 txtFullName.getText().trim().length()<fullNameMaxLength); 
+         return (txtFullName.getText().trim().length()>=fullNameMinLength&&
+                 txtFullName.getText().trim().length()<=fullNameMaxLength); 
         
     }
     
@@ -381,8 +394,8 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private boolean checkEmailtc() {
          return (txtEmail.getText().matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$")&&
-                 txtEmail.getText().trim().length()>userPasswordMinLength&&
-                 txtEmail.getText().trim().length()<userPasswordMaxLength); 
+                 txtEmail.getText().trim().length()>=userPasswordMinLength&&
+                 txtEmail.getText().trim().length()<=userPasswordMaxLength); 
         
     }
 
@@ -393,7 +406,7 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private boolean checkPasswordtc() {
          return (pfPassword.getText().trim().length()>=userPasswordMinLength&&
-                 pfPassword.getText().trim().length()<userPasswordMaxLength); 
+                 pfPassword.getText().trim().length()<=userPasswordMaxLength); 
         
     }
     
@@ -404,7 +417,7 @@ public class UIRegisterFXMLController extends GenericController{
      */
     private boolean checkSafetyPasswordtc() {
          return (pfSafetyPassword.getText().trim().length()>=userPasswordMinLength&&
-                    pfSafetyPassword.getText().trim().length()<userPasswordMaxLength&&
+                    pfSafetyPassword.getText().trim().length()<=userPasswordMaxLength&&
                     pfSafetyPassword.getText().equals(pfPassword.getText())); 
         
     }

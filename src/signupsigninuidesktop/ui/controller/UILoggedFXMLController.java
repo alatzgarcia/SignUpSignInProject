@@ -17,6 +17,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -28,8 +30,14 @@ public class UILoggedFXMLController extends GenericController {
     
     @FXML
     private Button btnLogout;
+     @FXML
+    private MenuBar menuBar; 
     @FXML
     private Label lblBienvenido;
+    @FXML
+    private MenuItem mItLogout;
+    @FXML
+    private MenuItem mItExit;
     
     /**
      * Create the Stage and the Scene ando show the stage.
@@ -46,6 +54,8 @@ public class UILoggedFXMLController extends GenericController {
         
         stage.setOnShowing(this::handleWindowShowing);
         btnLogout.setOnAction(this::logOut);
+        mItLogout.setOnAction(this::logOut);
+        mItExit.setOnAction(this::exitLogged);
         
         stage.show();
     }
@@ -88,7 +98,7 @@ public class UILoggedFXMLController extends GenericController {
          */
 
     
-    public void exitLogged(){
+    public void exitLogged(ActionEvent event){
         
         LOGGER.info("Adios");
         Platform.exit();

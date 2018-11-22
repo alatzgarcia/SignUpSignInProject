@@ -12,8 +12,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.Message;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
@@ -49,13 +51,17 @@ public class ILogicImplementation implements ILogic{
      * @return logged in user
      * @throws signupsigninuidesktop.exceptions.IncorrectLoginException
      * @throws signupsigninuidesktop.exceptions.IncorrectPasswordException
+     * @throws signupsigninuidesktop.exceptions.ServerNotAvailableException
      */
     @Override
-    public User login(User user) throws IncorrectLoginException, IncorrectPasswordException {
+    public User login(User user) throws IncorrectLoginException, 
+            IncorrectPasswordException, ServerNotAvailableException, 
+            GenericException,NotAvailableConnectionsException,ConfigurationParameterNotFoundException {
         try{
-            
             start();
             
+            LOGGER.info(ip);
+            LOGGER.info(String.valueOf(port));
             oos = new ObjectOutputStream(client.getOutputStream());
             LOGGER.info("Sending message to the server...");
             oos.writeObject(new Message("login", user));
@@ -63,7 +69,6 @@ public class ILogicImplementation implements ILogic{
             LOGGER.info("Awaiting for the server message...");
             ois = new ObjectInputStream(client.getInputStream());
             Message msg = (Message)ois.readObject();
-                        
             
             LOGGER.info("Server message arrived to the client.");
             LOGGER.info(msg.getMessage());
@@ -79,19 +84,26 @@ public class ILogicImplementation implements ILogic{
                 throw new ServerNotAvailableException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
-            } else{
-                return null; 
+            } else if(msg.getMessage().equalsIgnoreCase("configParamNotFound")){
+                throw new ConfigurationParameterNotFoundException(); 
+            } else if(msg.getMessage().equalsIgnoreCase("notAvailableConnections")){
+                throw new NotAvailableConnectionsException(); 
+            }else{
+                throw new GenericException(); 
             }
         } catch(IncorrectPasswordException ipe){
             throw new IncorrectPasswordException();
-           
-        
         } catch(IncorrectLoginException ile){
             throw new IncorrectLoginException();
-           
+        } catch(ServerNotAvailableException snae){
+            throw new ServerNotAvailableException();
+        }catch(NotAvailableConnectionsException nace){
+            throw new NotAvailableConnectionsException();           
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            throw new ConfigurationParameterNotFoundException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
+            throw new GenericException(); 
         } finally {
             try {
                 if(oos != null){
@@ -118,7 +130,10 @@ public class ILogicImplementation implements ILogic{
      * @throws signupsigninuidesktop.exceptions.LoginEmailExistException
      */
     @Override
-    public User register(User user) throws LoginExistsException, EmailExistsException,LoginEmailExistException{
+    public User register(User user) throws LoginExistsException, 
+            EmailExistsException,LoginEmailExistException, 
+            RegisterFailedException, ServerNotAvailableException,
+            NotAvailableConnectionsException, GenericException, ConfigurationParameterNotFoundException{
         try{
             start();
            
@@ -141,7 +156,6 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().equalsIgnoreCase("emailExists")){
                 throw new EmailExistsException();
             } else if(msg.getMessage().equalsIgnoreCase("loginEmailExist")){
-
                 throw new LoginEmailExistException();
             } else if(msg.getMessage().equalsIgnoreCase("registerFailed")){
                 throw new RegisterFailedException();
@@ -152,24 +166,30 @@ public class ILogicImplementation implements ILogic{
                 throw new NotAvailableConnectionsException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
+            } else if(msg.getMessage().equalsIgnoreCase("configParamNotFound")){
+                throw new ConfigurationParameterNotFoundException(); 
             }else{
-                return null; 
+                throw new GenericException(); 
             }
          } catch(LoginExistsException lee){
-            throw new LoginExistsException();
-           
-        
+            throw new LoginExistsException();        
          } catch(EmailExistsException eee){
             throw new EmailExistsException();
-                     
-        
         } catch(LoginEmailExistException leee){
-            throw new LoginEmailExistException();
-           
-           
-        } catch(Exception e){
+            throw new LoginEmailExistException();           
+        } catch(RegisterFailedException rfe){
+            throw new RegisterFailedException();           
+        }catch(ServerNotAvailableException snae){
+            throw new ServerNotAvailableException();           
+        }catch(NotAvailableConnectionsException nace){
+            throw new NotAvailableConnectionsException();           
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            throw new ConfigurationParameterNotFoundException();
+        }catch(GenericException ge){
+            throw new GenericException();           
+        }catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
+            throw new GenericException();
         } finally {
             try {
                 if(oos != null){
@@ -182,7 +202,6 @@ public class ILogicImplementation implements ILogic{
                     client.close();
                 }
             } catch (IOException ex) {
-                
                 LOGGER.severe(ex.getMessage());
             }
         }
@@ -214,7 +233,7 @@ public class ILogicImplementation implements ILogic{
      * Method that takes the parameters for the socket from a config file.
      */
     private void getData() {
-        Properties config = new Properties();
+       Properties config = new Properties();
 	FileInputStream input = null;
 	try {
             input = new FileInputStream("src/signupsigninuidesktop/config/connection.properties");

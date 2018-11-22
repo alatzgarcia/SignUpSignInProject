@@ -19,9 +19,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.WindowEvent;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.IncorrectLoginException;
 import signupsigninuidesktop.exceptions.IncorrectPasswordException;
+import signupsigninuidesktop.exceptions.NotAvailableConnectionsException;
+import signupsigninuidesktop.exceptions.ServerNotAvailableException;
 /**
  * Controller class for UILogin.fxml
  * @author Alatz
@@ -101,7 +104,7 @@ public class UILoginFXMLController extends GenericController {
             //Initialize the primary stage of the application
             loggedController.initStage(root);
             
-            stage.hide();
+            //stage.hide();
         } catch(IncorrectLoginException ile){
             LOGGER.severe("Error. Incorrect login. Detailed error"
                     + ile.getMessage());
@@ -113,7 +116,16 @@ public class UILoginFXMLController extends GenericController {
             pfPassword.setStyle("-fx-border-color: red");
             lblPasswordError.setText("Error. La contraseña introducida"
                     + " es incorrecta.");
-        } catch(Exception e){
+        }catch(ServerNotAvailableException snae){
+            LOGGER.severe(snae.getMessage());
+            showErrorAlert("El servidor no está disponible.");
+        }catch(ConfigurationParameterNotFoundException cpnfe){
+            LOGGER.severe(cpnfe.getMessage());
+            showErrorAlert("Error en los parámetros de configuración");
+        }catch(NotAvailableConnectionsException nace){
+            LOGGER.severe(nace.getMessage());
+            showErrorAlert("Error. No hay conexiones disponibles");
+        }catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Se ha producido un error en el inicio de sesión.");
         }
@@ -154,7 +166,7 @@ public class UILoginFXMLController extends GenericController {
             Platform.exit();
         } catch (Exception ex) {
             LOGGER.severe(ex.getMessage());
-            showErrorAlert("Error al intentar cerrar la aplicaciÃ³n.");
+            showErrorAlert("Error al intentar cerrar la aplicación.");
         }
     }
     
@@ -199,7 +211,7 @@ public class UILoginFXMLController extends GenericController {
      * @param oldValue
      * @param newValue 
      */
-    //--TOFIX
+   
     public void onFocusChanged(ObservableValue observable,
              Boolean oldValue,
              Boolean newValue){
