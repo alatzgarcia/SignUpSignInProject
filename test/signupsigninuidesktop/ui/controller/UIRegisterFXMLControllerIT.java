@@ -7,16 +7,19 @@ package signupsigninuidesktop.ui.controller;
 
 import javafx.stage.Stage;
 import org.junit.Test;
-
-import javafx.stage.Stage;
-import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.*;
 import org.testfx.framework.junit.ApplicationTest;
-import static org.testfx.matcher.base.NodeMatchers.*;
+import static org.testfx.matcher.base.NodeMatchers.isDisabled;
+import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.base.NodeMatchers.isFocused;
+import static org.testfx.matcher.base.NodeMatchers.isNotFocused;
+import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
+
 import signupsigninuidesktop.App;
+
 
 
 import signupsigninuidesktop.App;
@@ -43,7 +46,10 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks the fields and the buttons when the window opens
     */
-   @Test
+   
+   
+   
+   
    public void test01_testInitStage(){
       clickOn("#hlRegister");
       clickOn("#txtUsername");
@@ -62,7 +68,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks if the button register is enabled
     */
-   @Test
+   
    public void test02_ButtonRegisterEnabled(){
       clickOn("#hlRegister");
       clickOn("#txtUsername");
@@ -82,7 +88,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks if the button register is disabled if one field is missing and the rest
     * its completed with the min and man length
     */
-   @Test
+   
    public void test3_ButtonRegisterDisabled(){
        clickOn("#hlRegister");
          clickOn("#txtFullName");
@@ -100,7 +106,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks if the button register is disabled if one field is missing and the rest
     * its completed with the min and man length
     */
-   @Test
+   
    public void test04_ButtonRegisterDisabled(){
          clickOn("#hlRegister");
          clickOn("#txtUsername");
@@ -118,7 +124,6 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks if the button register is disabled if one field is missing and the rest
     * its completed with the min and man length
     */
-      @Test
      public void test05_ButtonRegisterDisabled(){
          clickOn("#hlRegister");
          clickOn("#txtUsername");
@@ -135,7 +140,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks if the button register is disabled if one field is missing and the rest
     * its completed with the min and man length
     */
-    @Test  
+      
     public void test06_ButtonRegisterDisabled(){
          clickOn("#hlRegister");
          clickOn("#txtUsername");
@@ -153,7 +158,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks if the button register is disabled if one field is missing and the rest
     * its completed with the min and man length
     */
-    @Test   
+       
     public void test07_ButtonRegisterDisabled(){
          clickOn("#hlRegister");
          clickOn("#txtUsername");
@@ -170,7 +175,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks if the button disbles if the password aren't equals
     */
-   @Test
+   
    public void test08_SafetyPasswordNotEquals(){
        clickOn("#hlRegister");
          clickOn("#txtUsername");
@@ -189,7 +194,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test09_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -208,7 +213,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test10_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -226,7 +231,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test11_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -244,7 +249,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test12_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -262,7 +267,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test13_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -280,7 +285,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the max length 
     */
-   @Test
+   
    public void test14_MaxLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -298,7 +303,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the min length 
     */
-     @Test
+     
    public void test15_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -317,7 +322,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     /**
     * Validates if the button register disables with the min length 
     */
-   @Test
+   
    public void test16_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -336,7 +341,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the min length 
     */
-   @Test
+   
    public void test17_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -355,7 +360,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the min length 
     */
-   @Test
+   
    public void test18_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -373,7 +378,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the min length 
     */
-   @Test
+   
    public void test19_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -391,7 +396,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Validates if the button register disables with the min length 
     */
-   @Test
+   
    public void test20_MinLenghtValidation(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -411,7 +416,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks when everything is correct the button is enabled, then erases one field and checks if the
     * button is disabled
     */
-   @Test
+   
    public void test21_CheckEnableAndDisable(){ 
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -435,7 +440,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks when everything is correct the button is enabled, then erases one field and checks if the
     * button is disabled
     */
-   @Test
+   
    public void test22_CheckEnableAndDisable(){ 
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -460,7 +465,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks when everything is correct the button is enabled, then erases one field and checks if the
     * button is disabled
     */
-   @Test
+   
    public void test23_CheckEnableAndDisable(){ 
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -485,7 +490,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks when everything is correct the button is enabled, then erases one field and checks if the
     * button is disabled
     */
-   @Test
+   
    public void test24_CheckEnableAndDisable(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -510,7 +515,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks when everything is correct the button is enabled, then erases one field and checks if the
     * button is disabled
     */
-   @Test
+   
    public void test25_CheckEnableAndDisable(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -535,7 +540,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks the button register when everything is correct but one field exceeds
     * the max length
     */
-   @Test
+   
    public void test27_oneMaxLength(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -555,7 +560,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks the button register when everything is correct but one field exceeds
     * the max length
     */
-   @Test
+   
    public void test28_oneMaxLength(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -574,7 +579,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks the button register when everything is correct but one field exceeds
     * the max length
     */
-   @Test
+   
    public void test29_oneMaxLength(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -593,7 +598,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks the button register when everything is correct but one field exceeds
     * the max length
     */
-   @Test
+   
    public void test30_oneMaxLength(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -612,7 +617,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
     * Checks the button register when everything is correct but one field exceeds
     * the max length
     */
-   @Test
+   
    public void test31_oneMaxLength(){
        clickOn("#hlRegister");
        clickOn("#txtUsername");
@@ -632,7 +637,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * This test methods checks the error of the labels
     */   
-   @Test
+   
    public void test32_checkErrorAtFocus(){
        clickOn("#hlRegister");
        write("a");
@@ -667,7 +672,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks the email format
     */
-   @Test
+   
    public void test33_checkEmail(){
       clickOn("#hlRegister");
       clickOn("#txtUsername");
@@ -706,7 +711,7 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks if the back button is enabled and clicks it
     */
-   @Test
+   
    public void test34_btnBackEnabledAndWork(){
        clickOn("#hlRegister");
        verifyThat("#btnBack", isEnabled());
@@ -716,12 +721,92 @@ public class UIRegisterFXMLControllerIT extends ApplicationTest {
    /**
     * Checks the exit Button and clicks it
     */
-   @Test
+   
    public void test35_btnExitEnabledAndWork(){
        clickOn("#hlRegister");
        verifyThat("#btnExit", isEnabled());
        clickOn("#btnExit");
        
+   }
+   
+   
+   /**
+    * Correct Register
+    */
+   @Test
+   public void test36_correctRegister(){
+       clickOn("#hlRegister");
+       clickOn("#txtUsername");
+       write("loginPrueba7");
+       clickOn("#txtFullName");
+       write("Full Name");
+       clickOn("#txtEmail");
+       write("emailPrueba7@gmail.com");
+       clickOn("#pfPasswordP");
+       write("password");
+       clickOn("#pfSafetyPassword");
+       write("password");
+       clickOn("#btnRegister");
+       verifyThat("#loggedPane", isVisible());
+   }
+   
+   /**
+    * Login exists
+    */
+    @Test
+    public void test37_loginExists(){
+       clickOn("#hlRegister");
+       clickOn("#txtUsername");
+       write("loginName2");
+       clickOn("#txtFullName");
+       write("Full Name");
+       clickOn("#txtEmail");
+       write("emailasdasdas@gmail.com");
+       clickOn("#pfPasswordP");
+       write("password");
+       clickOn("#pfSafetyPassword");
+       write("password");
+       clickOn("#btnRegister");
+       verifyThat("Error. El usuario ya existe", isVisible());
+   }
+    /**
+     * Email exists
+     */
+    
+    public void test38_emailExists(){
+       clickOn("#hlRegister");
+       clickOn("#txtUsername");
+       write("loginasdas2222");
+       clickOn("#txtFullName");
+       write("Full Name");
+       clickOn("#txtEmail");
+       write("email2@gmail.com");
+       clickOn("#pfPasswordP");
+       write("password");
+       clickOn("#pfSafetyPassword");
+       write("password");
+       clickOn("#btnRegister");
+       verifyThat("Error. El email ya existe", isVisible());
+   }
+    /**
+     * User an email exist
+     */
+    
+    public void test39_emailAndUserExists(){
+       clickOn("#hlRegister");
+       clickOn("#txtUsername");
+       write("loginName2");
+       clickOn("#txtFullName");
+       write("Full Name");
+       clickOn("#txtEmail");
+       write("email2@gmail.com");
+       clickOn("#pfPasswordP");
+       write("password");
+       clickOn("#pfSafetyPassword");
+       write("password");
+       clickOn("#btnRegister");
+       verifyThat("Error. El usuario ya existe", isVisible());
+       verifyThat("Error. El email ya existe", isVisible());
    }
    
 }

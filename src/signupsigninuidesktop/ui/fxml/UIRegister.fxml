@@ -12,29 +12,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="registerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UIRegisterFXMLController">
+<BorderPane fx:id="registerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninuidesktop.ui.controller.UIRegisterFXMLController">
    <bottom>
+       
+       
       <HBox prefHeight="72.0" prefWidth="1024.0" style="-fx-background-color: #b8d1f9;" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="51.0" prefWidth="1024.0">
                <children>
-                  <Label fx:id="lblIndicator" layoutX="33.0" layoutY="26.0" text="Cargando..." />
-                  <Button fx:id="btnExit" layoutX="890.0" layoutY="13.0" mnemonicParsing="false" onAction="#exit" prefHeight="43.0" prefWidth="99.0">
-                     <graphic>
-                        <ImageView fx:id="imgDoor" fitHeight="41.0" fitWidth="30.0">
-                           <image>
-                              <Image url="@../../../fxmlimages/icons/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="btnBack" layoutX="769.0" layoutY="13.0" mnemonicParsing="false" onAction="#returnToLogin" prefHeight="43.0" prefWidth="99.0">
-                     <graphic>
-                        <ImageView fx:id="imgBack" fitHeight="41.0" fitWidth="48.0">
-                           <image>
-                              <Image url="@../../../fxmlimages/icons/left-pointing-arrow.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
+                  <Label fx:id="lblIndicator" layoutX="33.0" layoutY="26.0" text="Cargando..." visible="false" />
+                  <Button fx:id="btnExit" layoutX="892.0" layoutY="13.0" mnemonicParsing="false" onAction="#exit" prefHeight="42.0" prefWidth="97.0" text="Salir">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="btnBack" layoutX="769.0" layoutY="13.0" mnemonicParsing="false" onAction="#returnToLogin" prefHeight="43.0" prefWidth="99.0" text="Atras">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                </children>
             </AnchorPane>
          </children>
@@ -45,35 +39,35 @@
          <children>
             <Label fx:id="lblUser" layoutX="162.0" layoutY="52.0" text="Usuario:">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
             <Label fx:id="lblFullName" layoutX="159.0" layoutY="110.0" text="Nombre completo:">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
             <Label fx:id="lblEmail" layoutX="159.0" layoutY="172.0" text="Correo electrónico:">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
             <Label fx:id="lblPassword" layoutX="159.0" layoutY="231.0" text="Contraseña:">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
             <Label fx:id="lblRepeatPassword" layoutX="159.0" layoutY="288.0" text="Repetir contraseña:">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
             <TextField fx:id="txtUsername" layoutX="338.0" layoutY="49.0" prefHeight="25.0" prefWidth="325.0" />
             <TextField fx:id="txtFullName" layoutX="338.0" layoutY="107.0" prefHeight="25.0" prefWidth="326.0" />
             <TextField fx:id="txtEmail" layoutX="338.0" layoutY="169.0" prefHeight="25.0" prefWidth="326.0" />
-            <PasswordField fx:id="pfPassword" layoutX="338.0" layoutY="228.0" prefHeight="25.0" prefWidth="327.0" />
+            <PasswordField fx:id="pfPasswordP" layoutX="338.0" layoutY="228.0" prefHeight="25.0" prefWidth="327.0" />
             <PasswordField fx:id="pfSafetyPassword" layoutX="338.0" layoutY="285.0" prefHeight="25.0" prefWidth="327.0" />
-            <Button fx:id="btnRegister" layoutX="565.0" layoutY="332.0" mnemonicParsing="false" onAction="#register" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: #42A5F5;" text="Registrarse">
+            <Button fx:id="btnRegister" layoutX="565.0" layoutY="332.0" mnemonicParsing="false" onAction="#register" prefHeight="45.0" prefWidth="100.0" text="Registrarse">
                <font>
                   <Font size="14.0" />
                </font></Button>
