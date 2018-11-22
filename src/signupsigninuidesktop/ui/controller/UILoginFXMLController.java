@@ -5,6 +5,8 @@
  */
 package signupsigninuidesktop.ui.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +20,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.User;
@@ -46,12 +49,17 @@ public class UILoginFXMLController extends GenericController {
     @FXML
     private Hyperlink hlRegister;
     
+   Date now = new Date(System.currentTimeMillis());
+   String date = new SimpleDateFormat("dd-MM-yyyy").format(now);
+
+    
     /**
      * InitStage method for the UILogin view
      * @param root 
      */
     public void initStage(Parent root){
         Scene scene = new Scene(root);
+        Stage stage=new Stage();
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.setResizable(false);
@@ -69,6 +77,7 @@ public class UILoginFXMLController extends GenericController {
         hlRegister.setOnAction(this::register);
         
         stage.show();
+       
     }
     
     /**
@@ -94,6 +103,9 @@ public class UILoginFXMLController extends GenericController {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/signupsigninuidesktop/ui/fxml/UILogged.fxml"));
             Parent root = loader.load();
+            
+            user.setLastAccess(now);
+            
             //Get controller from the loader
             UILoggedFXMLController loggedController = loader.getController();
             /*Set a reference in the controller 
@@ -105,7 +117,8 @@ public class UILoginFXMLController extends GenericController {
             //Initialize the primary stage of the application
             loggedController.initStage(root);
             
-            stage.hide();
+            stage.close();
+            
         } catch(IncorrectLoginException ile){
             LOGGER.severe("Error. Incorrect login. Detailed error"
                     + ile.getMessage());
@@ -130,6 +143,7 @@ public class UILoginFXMLController extends GenericController {
             LOGGER.severe(e.getMessage());
             showErrorAlert("Se ha producido un error en el inicio de sesión.");
         }
+        
     }
     
     /**
@@ -142,6 +156,9 @@ public class UILoginFXMLController extends GenericController {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/signupsigninuidesktop/ui/fxml/UIRegister.fxml"));
             Parent root = loader.load();
+            
+             user.setLastAccess(now);
+            
             //Get controller from the loader
             UIRegisterFXMLController registerController = loader.getController();
             /*Set a reference in the controller 
@@ -156,6 +173,7 @@ public class UILoginFXMLController extends GenericController {
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error al redirigir al registro de usuario.");
         }
+      
     }
     
     /**
