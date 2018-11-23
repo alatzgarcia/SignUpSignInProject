@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import signupsigninuidesktop.exceptions.ConfigurationParameterNotFoundException;
 import signupsigninutilities.model.Message;
 import signupsigninutilities.model.User;
 import signupsigninuidesktop.exceptions.EmailExistsException;
@@ -53,7 +54,9 @@ public class ILogicImplementation implements ILogic{
      */
     @Override
     public User login(User user) throws IncorrectLoginException, 
-            IncorrectPasswordException, ServerNotAvailableException, Exception {
+            IncorrectPasswordException, ServerNotAvailableException, 
+            ConfigurationParameterNotFoundException, 
+            NotAvailableConnectionsException, GenericException {
         try{
             
             start();
@@ -81,6 +84,10 @@ public class ILogicImplementation implements ILogic{
                 throw new ServerNotAvailableException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
+            } else if(msg.getMessage().equalsIgnoreCase("configParamNotFound")){
+                throw new ConfigurationParameterNotFoundException(); 
+            } else if(msg.getMessage().equalsIgnoreCase("notAvailableConnections")){
+                throw new NotAvailableConnectionsException(); 
             } else{
                 return null; 
             }
@@ -90,6 +97,10 @@ public class ILogicImplementation implements ILogic{
             throw new IncorrectLoginException();
         } catch(ServerNotAvailableException snae){
             throw new ServerNotAvailableException();
+        } catch(ConfigurationParameterNotFoundException cpnfe){
+            throw new ConfigurationParameterNotFoundException(); 
+        } catch(NotAvailableConnectionsException nace){
+            throw new NotAvailableConnectionsException(); 
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             throw new GenericException();
@@ -121,18 +132,20 @@ public class ILogicImplementation implements ILogic{
     @Override
     public User register(User user) throws LoginExistsException, 
             EmailExistsException, LoginEmailExistException, 
-            ServerNotAvailableException, Exception{
+            ServerNotAvailableException, RegisterFailedException,
+            NotAvailableConnectionsException, GenericException,
+            ConfigurationParameterNotFoundException {
         try{
             start();
-           
+            
             oos = new ObjectOutputStream(client.getOutputStream());
             LOGGER.info("Sending message to the server...");
             oos.writeObject(new Message("register", user));
-           
+            
             LOGGER.info("Awaiting for the server message...");
             ois = new ObjectInputStream(client.getInputStream());
             Message msg = (Message)ois.readObject();
-                        
+            
             LOGGER.info(msg.getMessage());
             LOGGER.info("Server message arrived to the client.");
             if(msg.getMessage().equalsIgnoreCase("ok")){
@@ -144,7 +157,6 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().equalsIgnoreCase("emailExists")){
                 throw new EmailExistsException();
             } else if(msg.getMessage().equalsIgnoreCase("loginEmailExist")){
-
                 throw new LoginEmailExistException();
             } else if(msg.getMessage().equalsIgnoreCase("registerFailed")){
                 throw new RegisterFailedException();
@@ -153,19 +165,28 @@ public class ILogicImplementation implements ILogic{
             } else if(msg.getMessage().
                     equalsIgnoreCase("notAvailableConnections")){
                 throw new NotAvailableConnectionsException();
+            } else if(msg.getMessage().
+                    equalsIgnoreCase("configParamNotFound")){
+                throw new ConfigurationParameterNotFoundException();
             } else if(msg.getMessage().equalsIgnoreCase("error")){
                 throw new GenericException(); 
             }else{
                 throw new GenericException(); 
             }
-         } catch(LoginExistsException lee){
+        } catch(LoginExistsException lee){
             throw new LoginExistsException();
-         } catch(EmailExistsException eee){
+        } catch(EmailExistsException eee){
             throw new EmailExistsException();
         } catch(LoginEmailExistException leee){
             throw new LoginEmailExistException();
         } catch(ServerNotAvailableException snae){
-            throw new IncorrectLoginException();
+            throw new ServerNotAvailableException();
+        } catch(RegisterFailedException rfe){
+            throw new ServerNotAvailableException();
+        } catch(NotAvailableConnectionsException nace){
+            throw new ServerNotAvailableException();
+        } catch(ConfigurationParameterNotFoundException cpnfe){
+            throw new ServerNotAvailableException();
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             throw new GenericException();
@@ -181,7 +202,6 @@ public class ILogicImplementation implements ILogic{
                     client.close();
                 }
             } catch (IOException ex) {
-                
                 LOGGER.severe(ex.getMessage());
             }
         }

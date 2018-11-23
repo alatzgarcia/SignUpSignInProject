@@ -128,9 +128,12 @@ public class UILoginFXMLController extends GenericController {
             loggedController.setLogicManager(logicManager);
             //Send the user to the controller
             loggedController.setUser(user);
+            //Send the current stage for coming back later
+            loggedController.setPreviousStage(stage);
             //Initialize the primary stage of the application
             loggedController.initStage(root);
-            
+            txtUsername.setText("");
+            pfPassword.setText("");
             stage.hide();
         } catch(IncorrectLoginException ile){
             LOGGER.severe("Error. Incorrect login. Detailed error"
@@ -168,10 +171,13 @@ public class UILoginFXMLController extends GenericController {
                 for the UIController view for the logic manager object           
             */
             registerController.setLogicManager(logicManager);
+            //Send the current stage for coming back later
+            registerController.setPreviousStage(stage);
             //Initialize the primary stage of the application
             registerController.initStage(root);
-            
-            //stage.hide();
+            txtUsername.setText("");
+            pfPassword.setText("");
+            stage.hide();
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
             showErrorAlert("Error al redirigir al registro de usuario.");

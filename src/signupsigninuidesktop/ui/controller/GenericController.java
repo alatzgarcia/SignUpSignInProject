@@ -27,7 +27,8 @@ public class GenericController {
     protected ILogic logicManager;
     protected Stage stage;
     protected User user;
-
+    protected Stage previousStage;
+    
     /**
      * Shows an alert with an error message
      * @param errorMsg error message to show on alert
@@ -63,8 +64,14 @@ public class GenericController {
      */
     public void setUser(User user){
         this.user=user;
-        
     }
-
-    
+  
+    /**
+     * Sets the stage of the previous window to give the option
+     * to show it again later
+     * @param stage 
+     */
+    public void setPreviousStage(Stage stage){
+        this.previousStage = stage;
+    }
 }
